@@ -36,7 +36,7 @@
         <!-- File/Folder Context Menu -->
         <ContextMenu x:Key="ItemContextMenu">
             <!-- Open -->
-            <MenuItem Header="Open"
+            <MenuItem Header="{DynamicResource Context_Open}"
                       Command="{Binding Data.ItemDoubleClickedCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -45,7 +45,7 @@
                 </MenuItem.Icon>
             </MenuItem>
             <!-- Open File (files only) -->
-            <MenuItem Header="Open with Default App"
+            <MenuItem Header="{DynamicResource Context_OpenDefaultApp}"
                       Command="{Binding Data.OpenFileCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}"
                       Visibility="{Binding IsDirectory, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
@@ -54,7 +54,7 @@
                                Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Open in Explorer"
+            <MenuItem Header="{DynamicResource Context_OpenInExplorer}"
                       Command="{Binding Data.OpenInExplorerItemCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -62,7 +62,7 @@
                                Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Open in Terminal"
+            <MenuItem Header="{DynamicResource Context_OpenInTerminal}"
                       Command="{Binding Data.OpenInTerminalCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -74,7 +74,7 @@
             <Separator Style="{StaticResource MenuSeparator}"/>
 
             <!-- Scan (folders only) -->
-            <MenuItem Header="Scan Folder"
+            <MenuItem Header="{DynamicResource Context_ScanFolder}"
                       Command="{Binding Data.ScanFolderCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}"
                       Visibility="{Binding IsDirectory, Converter={StaticResource BooleanToVis}}">
@@ -83,7 +83,7 @@
                                Foreground="{StaticResource AccentBlueBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="AI Analyze"
+            <MenuItem Header="{DynamicResource Context_AIAnalyze}"
                       Command="{Binding Data.AskAIForItemCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -95,7 +95,7 @@
             <Separator Style="{StaticResource MenuSeparator}"/>
 
             <!-- Copy -->
-            <MenuItem Header="Copy Path"
+            <MenuItem Header="{DynamicResource Context_CopyPath}"
                       Command="{Binding Data.CopyPathCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}"
                       InputGestureText="Ctrl+Shift+C">
@@ -104,7 +104,7 @@
                                Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Copy Name"
+            <MenuItem Header="{DynamicResource Context_CopyName}"
                       Command="{Binding Data.CopyNameCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -116,7 +116,7 @@
             <Separator Style="{StaticResource MenuSeparator}"/>
 
             <!-- Delete -->
-            <MenuItem Header="Move to Recycle Bin"
+            <MenuItem Header="{DynamicResource Delete_ToRecycleBin}"
                       Command="{Binding Data.DeleteToRecycleBinCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
@@ -124,7 +124,7 @@
                                Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Delete Permanently"
+            <MenuItem Header="{DynamicResource Delete_Permanently}"
                       Command="{Binding Data.DeletePermanentlyCommand, Source={StaticResource ViewModelProxy}}"
                       CommandParameter="{Binding}"
                       Foreground="{StaticResource DangerBrush}">
@@ -172,17 +172,17 @@
                         WindowChrome.IsHitTestVisibleInChrome="True">
                 <!-- Minimize -->
                 <Button x:Name="MinimizeButton" Click="MinimizeButton_Click"
-                        Style="{StaticResource WindowControlButton}" ToolTip="Minimize">
+                        Style="{StaticResource WindowControlButton}" ToolTip="{DynamicResource Window_Minimize}">
                     <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                 </Button>
                 <!-- Maximize/Restore -->
                 <Button x:Name="MaximizeButton" Click="MaximizeButton_Click"
-                        Style="{StaticResource WindowControlButton}" ToolTip="Maximize">
+                        Style="{StaticResource WindowControlButton}" ToolTip="{DynamicResource Window_Maximize}">
                     <TextBlock x:Name="MaximizeIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                 </Button>
                 <!-- Close -->
                 <Button x:Name="CloseButton" Click="CloseButton_Click"
-                        Style="{StaticResource WindowCloseButton}" ToolTip="Close">
+                        Style="{StaticResource WindowCloseButton}" ToolTip="{DynamicResource Window_Close}">
                     <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                 </Button>
             </StackPanel>
@@ -206,27 +206,27 @@
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoBackCommand}"
                             IsEnabled="{Binding CanGoBack}"
-                            ToolTip="Back (Alt+Left)"
+                            ToolTip="{DynamicResource Nav_Back}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoForwardCommand}"
                             IsEnabled="{Binding CanGoForward}"
-                            ToolTip="Forward (Alt+Right)"
+                            ToolTip="{DynamicResource Nav_Forward}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoUpCommand}"
                             IsEnabled="{Binding CanGoUp}"
-                            ToolTip="Up (Alt+Up)"
+                            ToolTip="{DynamicResource Nav_Up}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE74A;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoHomeCommand}"
-                            ToolTip="Home"
+                            ToolTip="{DynamicResource Nav_Home}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
@@ -305,7 +305,7 @@
                             Margin="0,0,8,0" Padding="16,8">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0"/>
-                            <TextBlock Text="SCAN" FontSize="12" FontWeight="Bold" FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource Action_Scan}" FontSize="12" FontWeight="Bold" FontFamily="Consolas"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource ModernButton}"
@@ -314,17 +314,17 @@
                             Margin="0,0,8,0" Padding="16,8">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE71A;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0"/>
-                            <TextBlock Text="STOP" FontSize="12" FontFamily="Consolas"/>
+                            <TextBlock Text="{DynamicResource Action_Stop}" FontSize="12" FontFamily="Consolas"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding RefreshCommand}"
-                            ToolTip="Refresh"
+                            ToolTip="{DynamicResource Action_Refresh}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
-                            ToolTip="Settings"
+                            ToolTip="{DynamicResource Action_Settings}"
                             Command="{Binding OpenSettingsCommand}"
                             Width="36" Height="36">
                         <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
@@ -338,21 +338,21 @@
                 Padding="12,8"
                 BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="SORT:" Foreground="{StaticResource TextMutedBrush}"
+                <TextBlock Text="{DynamicResource Sort_Label}" Foreground="{StaticResource TextMutedBrush}"
                            FontSize="11" FontFamily="Consolas" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <ComboBox Width="90" SelectedIndex="{Binding SortByIndex}" Margin="0,0,20,0">
-                    <ComboBoxItem Content="Size"/>
-                    <ComboBoxItem Content="Name"/>
-                    <ComboBoxItem Content="Date"/>
+                    <ComboBoxItem Content="{DynamicResource Sort_Size}"/>
+                    <ComboBoxItem Content="{DynamicResource Sort_Name}"/>
+                    <ComboBoxItem Content="{DynamicResource Sort_Date}"/>
                 </ComboBox>
 
-                <CheckBox Content="Show Hidden"
+                <CheckBox Content="{DynamicResource Display_ShowHidden}"
                           IsChecked="{Binding ShowHiddenFolders}"
                           Foreground="{StaticResource TextPrimaryBrush}"
                           FontSize="12"
                           Margin="0,0,20,0"/>
 
-                <CheckBox Content="Show Files"
+                <CheckBox Content="{DynamicResource Display_ShowFiles}"
                           IsChecked="{Binding ShowFiles}"
                           Foreground="{StaticResource TextPrimaryBrush}"
                           FontSize="12"
@@ -392,13 +392,13 @@
                 <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="16,4,8,4"
                            Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
 
-                <TextBlock Text="AI:" Foreground="{StaticResource AccentPurpleBrush}"
+                <TextBlock Text="{DynamicResource AI_Label}" Foreground="{StaticResource AccentPurpleBrush}"
                            FontSize="11" FontFamily="Consolas" FontWeight="Bold"
                            VerticalAlignment="Center" Margin="8,0,8,0"/>
                 <ComboBox Width="110" SelectedIndex="{Binding CurrentAIProviderIndex, Mode=TwoWay}">
-                    <ComboBoxItem Content="LM Studio"/>
-                    <ComboBoxItem Content="Gemini"/>
-                    <ComboBoxItem Content="None"/>
+                    <ComboBoxItem Content="{DynamicResource AI_LMStudio}"/>
+                    <ComboBoxItem Content="{DynamicResource AI_Gemini}"/>
+                    <ComboBoxItem Content="{DynamicResource AI_None}"/>
                 </ComboBox>
             </StackPanel>
         </Border>
@@ -423,7 +423,7 @@
                                 <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="RECENT_LOCATIONS" FontFamily="Consolas"
+                                <TextBlock Text="{DynamicResource Home_Recent}" FontFamily="Consolas"
                                            Foreground="{StaticResource AccentBlueBrush}"
                                            FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
@@ -480,7 +480,7 @@
                                 <TextBlock Text="&#xEDA2;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="DEVICES_AND_DRIVES" FontFamily="Consolas"
+                                <TextBlock Text="{DynamicResource Home_Drives}" FontFamily="Consolas"
                                            Foreground="{StaticResource AccentBlueBrush}"
                                            FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </StackPanel>
@@ -674,15 +674,15 @@
                                                    VerticalAlignment="Center"/>
                                         <TextBlock Foreground="{StaticResource TextPrimaryBrush}"
                                                    FontSize="13" FontFamily="Consolas" VerticalAlignment="Center">
-                                            <Run Text="RESULTS: "/>
+                                            <Run Text="{DynamicResource Search_Results}"/>
                                             <Run Text="{Binding SearchResultCount, Mode=OneWay}" FontWeight="SemiBold"
                                                  Foreground="{StaticResource AccentBlueBrush}"/>
-                                            <Run Text=" items"/>
+                                            <Run Text=" "/><Run Text="{DynamicResource Search_Items}"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                                                 Visibility="{Binding IsSearching, Converter={StaticResource BooleanToVis}}">
-                                        <TextBlock Text="SCANNING..." FontSize="11" FontFamily="Consolas"
+                                        <TextBlock Text="{DynamicResource Search_Scanning}" FontSize="11" FontFamily="Consolas"
                                                    Foreground="{StaticResource AccentBlueBrush}"
                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <ProgressBar IsIndeterminate="True" Width="60" Height="4"
@@ -762,12 +762,12 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                     <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                                    <TextBlock Text="ANALYSIS" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource AI_Analysis}" FontFamily="Consolas"
                                                Foreground="{StaticResource AccentPurpleBrush}"
                                                FontWeight="Bold" FontSize="14"/>
                                 </StackPanel>
 
-                                <TextBlock Text="Click 'Analyze' to check if safe to delete"
+                                <TextBlock Text="{DynamicResource AI_ClickToAnalyze}"
                                            Foreground="{StaticResource TextSecondaryBrush}"
                                            FontSize="11" FontStyle="Italic"
                                            Visibility="{Binding HasDisplayedAdvice, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
@@ -782,7 +782,7 @@
                                                 <TextBlock Text="{Binding DisplayedAdvice.Level}"
                                                            Foreground="White" FontFamily="Consolas"
                                                            FontSize="14" FontWeight="Bold"/>
-                                                <TextBlock Text="AI Recommendation"
+                                                <TextBlock Text="{DynamicResource AI_Recommendation}"
                                                            Foreground="#FFFFFFCC"
                                                            FontSize="10"/>
                                             </StackPanel>
@@ -800,7 +800,7 @@
                                                    Foreground="{StaticResource TextMutedBrush}" LineHeight="14">
                                             <Run Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="9"
                                                  Foreground="#99FFD600"/><Run Text=" "/>
-                                            <Run Text="AI-generated analysis for reference only. Results may be inaccurate. Please verify before deleting any files. Use at your own risk."/>
+                                            <Run Text="{DynamicResource AI_Disclaimer}"/>
                                         </TextBlock>
                                     </Border>
                                 </StackPanel>
@@ -816,7 +816,7 @@
                                     Margin="0,0,0,8" Padding="12,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Text="SCAN" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
+                                    <TextBlock Text="{DynamicResource Action_Scan}" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource PurpleAccentButton}"
@@ -825,7 +825,7 @@
                                     Margin="0,0,0,8" Padding="12,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Text="ANALYZE" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
+                                    <TextBlock Text="{DynamicResource Action_Analyze}" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource ModernButton}"
@@ -834,7 +834,7 @@
                                     Margin="0,0,0,8" Padding="12,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="&#xEC50;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Open in Explorer" FontSize="13"/>
+                                    <TextBlock Text="{DynamicResource Action_OpenInExplorer}" FontSize="13"/>
                                 </StackPanel>
                             </Button>
                             <Button Command="{Binding DeleteSelectedCommand}"
@@ -855,7 +855,7 @@
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"
                                                Foreground="{StaticResource DangerBrush}"/>
-                                    <TextBlock Text="DELETE" FontSize="13" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Action_Delete}" FontSize="13" FontFamily="Consolas"
                                                Foreground="{StaticResource DangerBrush}"/>
                                 </StackPanel>
                             </Button>
@@ -869,7 +869,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
-                                    <TextBlock Text="SIZE_MAP" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Section_SizeMap}" FontFamily="Consolas"
                                                Foreground="{StaticResource AccentBlueBrush}"
                                                FontWeight="Bold" FontSize="14"/>
                                 </StackPanel>
@@ -919,7 +919,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                     <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
-                                    <TextBlock Text="TOP_CONSUMERS" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Section_TopConsumers}" FontFamily="Consolas"
                                                Foreground="{StaticResource AccentBlueBrush}"
                                                FontWeight="Bold" FontSize="12"/>
                                 </StackPanel>
@@ -967,7 +967,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                     <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                                    <TextBlock Text="FILE_TYPES" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Section_FileTypes}" FontFamily="Consolas"
                                                Foreground="{StaticResource AccentPurpleBrush}"
                                                FontWeight="Bold" FontSize="12"/>
                                 </StackPanel>
@@ -986,7 +986,7 @@
                                                     <TextBlock Grid.Column="1" FontSize="10" FontFamily="Consolas"
                                                                Foreground="{StaticResource TextMutedBrush}"
                                                                HorizontalAlignment="Right" Margin="0,0,6,0">
-                                                        <Run Text="{Binding FileCount, Mode=OneWay}"/><Run Text=" files"/>
+                                                        <Run Text="{Binding FileCount, Mode=OneWay}"/><Run Text=" "/><Run Text="{DynamicResource Section_Files}"/>
                                                     </TextBlock>
                                                     <TextBlock Grid.Column="2" Text="{Binding SizeDisplay}"
                                                                FontSize="11" FontFamily="Consolas"
@@ -1025,7 +1025,7 @@
                                     </StackPanel>
                                     <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="20"
                                                Foreground="{StaticResource TextSecondaryBrush}">
-                                        <Run Text="Intelligent disk space analyzer with AI-powered cleanup recommendations."/>
+                                        <Run Text="{DynamicResource Home_Description}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
@@ -1035,28 +1035,28 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                         <TextBlock Text="&#xE82F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                    Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                                        <TextBlock Text="QUICK_START" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold"
+                                        <TextBlock Text="{DynamicResource Home_QuickStart}" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold"
                                                    Foreground="{StaticResource AccentPurpleBrush}"/>
                                     </StackPanel>
                                     <StackPanel Margin="0,0,0,6">
                                         <TextBlock FontSize="11" FontFamily="Consolas"
                                                    Foreground="{StaticResource TextSecondaryBrush}">
                                             <Run Text="01." Foreground="{StaticResource AccentBlueBrush}"/>
-                                            <Run Text=" Select a drive or recent folder"/>
+                                            <Run Text=" "/><Run Text="{DynamicResource Home_Step1}"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Margin="0,0,0,6">
                                         <TextBlock FontSize="11" FontFamily="Consolas"
                                                    Foreground="{StaticResource TextSecondaryBrush}">
                                             <Run Text="02." Foreground="{StaticResource AccentBlueBrush}"/>
-                                            <Run Text=" Click 'SCAN' to analyze sizes"/>
+                                            <Run Text=" "/><Run Text="{DynamicResource Home_Step2}"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel>
                                         <TextBlock FontSize="11" FontFamily="Consolas"
                                                    Foreground="{StaticResource TextSecondaryBrush}">
                                             <Run Text="03." Foreground="{StaticResource AccentPurpleBrush}"/>
-                                            <Run Text=" Use AI to check if safe to delete"/>
+                                            <Run Text=" "/><Run Text="{DynamicResource Home_Step3}"/>
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
@@ -1070,7 +1070,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Text="DETAILS" FontFamily="Consolas"
+                                <TextBlock Text="{DynamicResource Section_Details}" FontFamily="Consolas"
                                            Foreground="{StaticResource AccentBlueBrush}"
                                            FontWeight="Bold" FontSize="14"/>
                             </StackPanel>
@@ -1082,7 +1082,7 @@
                                            FontWeight="SemiBold" FontSize="13" FontFamily="Consolas"
                                            TextWrapping="Wrap" Margin="0,0,0,8"/>
 
-                                <TextBlock Text="Select an item to view details"
+                                <TextBlock Text="{DynamicResource Detail_SelectItem}"
                                            Foreground="{StaticResource TextMutedBrush}"
                                            FontSize="12" FontStyle="Italic"
                                            TextWrapping="Wrap"/>
@@ -1110,14 +1110,14 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="PATH" FontFamily="Consolas"
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Detail_Path}" FontFamily="Consolas"
                                                Foreground="{StaticResource TextMutedBrush}"
                                                FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedItem.Path}"
                                                Foreground="{StaticResource TextSecondaryBrush}"
                                                FontSize="11" FontFamily="Consolas" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="SIZE" FontFamily="Consolas"
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Detail_Size}" FontFamily="Consolas"
                                                Foreground="{StaticResource TextMutedBrush}"
                                                FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1"
@@ -1125,7 +1125,7 @@
                                                Foreground="{StaticResource AccentBlueBrush}"
                                                FontSize="18" FontWeight="Bold" FontFamily="Consolas" Margin="0,0,0,12"/>
 
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="FILES" FontFamily="Consolas"
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Detail_Files}" FontFamily="Consolas"
                                                Foreground="{StaticResource TextMutedBrush}"
                                                FontSize="10" Margin="0,0,0,4"
                                                Visibility="{Binding SelectedItem.IsDirectory, Converter={StaticResource BooleanToVis}}"/>
@@ -1135,7 +1135,7 @@
                                                FontSize="12" FontFamily="Consolas" Margin="0,0,0,12"
                                                Visibility="{Binding SelectedItem.IsDirectory, Converter={StaticResource BooleanToVis}}"/>
 
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="MODIFIED" FontFamily="Consolas"
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource Detail_Modified}" FontFamily="Consolas"
                                                Foreground="{StaticResource TextMutedBrush}"
                                                FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="3" Grid.Column="1"
@@ -1177,15 +1177,16 @@
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
-                    <TextBlock Text="READY" FontFamily="Consolas" FontSize="11"
+                    <TextBlock FontFamily="Consolas" FontSize="11"
                                VerticalAlignment="Center">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="{DynamicResource Status_Ready}"/>
                                 <Setter Property="Foreground" Value="#00FF88"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsScanning}" Value="True">
                                         <Setter Property="Foreground" Value="{StaticResource AccentBlueBrush}"/>
-                                        <Setter Property="Text" Value="SCANNING"/>
+                                        <Setter Property="Text" Value="{DynamicResource Status_ScanningLabel}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -1238,7 +1239,7 @@
                                 <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="18"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,10,0"
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="SETTINGS" FontFamily="Consolas" FontSize="18" FontWeight="Bold"
+                                <TextBlock Text="{DynamicResource Settings_Title}" FontFamily="Consolas" FontSize="18" FontWeight="Bold"
                                            Foreground="{StaticResource AccentBlueBrush}" VerticalAlignment="Center"/>
                             </StackPanel>
                             <Button Style="{StaticResource IconButton}" HorizontalAlignment="Right"
@@ -1247,17 +1248,34 @@
                             </Button>
                         </Grid>
 
+                        <!-- Language Section -->
+                        <StackPanel Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="{DynamicResource Settings_Language}" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentBlueBrush}"/>
+                            </StackPanel>
+                            <ComboBox SelectedIndex="{Binding SettingsLanguageIndex}" Width="200" HorizontalAlignment="Left">
+                                <ComboBoxItem Content="English"/>
+                                <ComboBoxItem Content="简体中文"/>
+                                <ComboBoxItem Content="日本語"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,0,0,20"/>
+
                         <!-- AI Configuration Section -->
                         <StackPanel Margin="0,0,0,20">
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Text="AI_CONFIG" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                <TextBlock Text="{DynamicResource Settings_AI}" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
                                            Foreground="{StaticResource AccentPurpleBrush}"/>
                             </StackPanel>
 
                             <!-- LM Studio URL -->
-                            <TextBlock Text="LM Studio Endpoint" FontSize="11" FontFamily="Consolas"
+                            <TextBlock Text="{DynamicResource Settings_LMStudioUrl}" FontSize="11" FontFamily="Consolas"
                                        Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                             <TextBox Text="{Binding SettingsLMStudioUrl, UpdateSourceTrigger=PropertyChanged}"
                                      FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,12"/>
@@ -1269,13 +1287,13 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Margin="0,0,8,0">
-                                    <TextBlock Text="Temperature" FontSize="11" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Settings_Temperature}" FontSize="11" FontFamily="Consolas"
                                                Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                                     <TextBox Text="{Binding SettingsAITemperature, UpdateSourceTrigger=PropertyChanged}"
                                              FontFamily="Consolas" FontSize="12" Padding="8,6"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                                    <TextBlock Text="Max Tokens" FontSize="11" FontFamily="Consolas"
+                                    <TextBlock Text="{DynamicResource Settings_MaxTokens}" FontSize="11" FontFamily="Consolas"
                                                Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                                     <TextBox Text="{Binding SettingsAIMaxTokens, UpdateSourceTrigger=PropertyChanged}"
                                              FontFamily="Consolas" FontSize="12" Padding="8,6"/>
@@ -1290,14 +1308,14 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Text="SCAN_CONFIG" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                <TextBlock Text="{DynamicResource Settings_ScanConfig}" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
                                            Foreground="{StaticResource AccentBlueBrush}"/>
                             </StackPanel>
 
                             <!-- Cache Expiration -->
                             <TextBlock FontSize="11" FontFamily="Consolas"
                                        Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4">
-                                <Run Text="Cache Expiration (days)"/>
+                                <Run Text="{DynamicResource Settings_CacheExpiration}"/>
                             </TextBlock>
                             <TextBox Text="{Binding SettingsCacheExpirationDays, UpdateSourceTrigger=PropertyChanged}"
                                      FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,12"
@@ -1306,11 +1324,11 @@
                             <!-- Exclude Patterns -->
                             <TextBlock FontSize="11" FontFamily="Consolas"
                                        Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4">
-                                <Run Text="Exclude Patterns (comma-separated)"/>
+                                <Run Text="{DynamicResource Settings_ExcludePatterns}"/>
                             </TextBlock>
                             <TextBox Text="{Binding SettingsExcludePatterns, UpdateSourceTrigger=PropertyChanged}"
                                      FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,4"/>
-                            <TextBlock Text="e.g. node_modules, .git, __pycache__" FontSize="10"
+                            <TextBlock Text="{DynamicResource Settings_ExcludePatternsHint}" FontSize="10"
                                        Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas"
                                        Margin="0,0,0,12"/>
                         </StackPanel>
@@ -1322,7 +1340,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Text="MAINTENANCE" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                <TextBlock Text="{DynamicResource Settings_Maintenance}" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
                                            Foreground="{StaticResource AccentBlueBrush}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
@@ -1332,7 +1350,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                    Margin="0,0,6,0"/>
-                                        <TextBlock Text="Clear Cache" FontSize="11" FontFamily="Consolas"/>
+                                        <TextBlock Text="{DynamicResource Settings_ClearCache}" FontSize="11" FontFamily="Consolas"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource ModernButton}"
@@ -1341,7 +1359,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                    Margin="0,0,6,0"/>
-                                        <TextBlock Text="Clear Recents" FontSize="11" FontFamily="Consolas"/>
+                                        <TextBlock Text="{DynamicResource Settings_ClearRecents}" FontSize="11" FontFamily="Consolas"/>
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
@@ -1354,7 +1372,7 @@
                             <Button Style="{StaticResource ModernButton}"
                                     Command="{Binding CloseSettingsCommand}"
                                     Padding="16,8" Margin="0,0,8,0">
-                                <TextBlock Text="CANCEL" FontSize="12" FontFamily="Consolas"/>
+                                <TextBlock Text="{DynamicResource Settings_Cancel}" FontSize="12" FontFamily="Consolas"/>
                             </Button>
                             <Button Style="{StaticResource AccentButton}"
                                     Command="{Binding SaveSettingsPanelCommand}"
@@ -1362,7 +1380,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
                                                Margin="0,0,6,0"/>
-                                    <TextBlock Text="SAVE" FontSize="12" FontFamily="Consolas" FontWeight="Bold"/>
+                                    <TextBlock Text="{DynamicResource Settings_Save}" FontSize="12" FontFamily="Consolas" FontWeight="Bold"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>

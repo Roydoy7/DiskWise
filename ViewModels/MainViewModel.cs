@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DiskWise.Controls;
 using DiskWise.Models;
 using DiskWise.Services;
 
@@ -119,6 +120,9 @@ public partial class MainViewModel : ObservableObject
     public ObservableCollection<LMStudioModel> LMStudioModels { get; } = [];
     public ObservableCollection<BreadcrumbItem> Breadcrumbs { get; } = [];
     public ObservableCollection<FileSystemItem> SearchResults { get; } = [];
+    public ObservableCollection<FileSystemItem> TopConsumers { get; } = [];
+    public ObservableCollection<FileTypeInfo> FileTypeBreakdown { get; } = [];
+    public ObservableCollection<PieSliceData> PieChartSlices { get; } = [];
 
     // Search properties
     [ObservableProperty]
@@ -262,6 +266,9 @@ public partial class MainViewModel : ObservableObject
             AIProvider.Gemini => 1,
             _ => 2 // None
         };
+
+        // Apply LM Studio URL
+        _lmStudioService.UpdateBaseUrl(_settingsService.Settings.LMStudioUrl);
     }
 
     private async Task LoadDrivesAsync()
@@ -330,6 +337,9 @@ public partial class MainViewModel : ObservableObject
             IsAtHome = true;
             CurrentFolder = null;
             CurrentItems.Clear();
+            TopConsumers.Clear();
+            FileTypeBreakdown.Clear();
+            PieChartSlices.Clear();
             await LoadDrivesAsync();
             LoadRecentFolders();
         }
@@ -543,9 +553,11 @@ public partial class MainViewModel : ObservableObject
                 var total = CurrentItems.Where(i => i.Size > 0).Sum(i => i.Size);
                 TotalSize = total;
                 StatusMessage = $"{folderCount} folders, {fileCount} files | Total: {FileSystemItem.FormatSize(total)} (cached)";
+                UpdatePieChart();
             }
             else
             {
+                PieChartSlices.Clear();
                 StatusMessage = $"{folderCount} folders, {fileCount} files";
             }
         }
@@ -572,6 +584,108 @@ public partial class MainViewModel : ObservableObject
         }
 
         return null;
+    }
+
+    private void UpdateScanAnalytics(FileSystemItem scanResult)
+    {
+        // Collect all directories from the scan tree (depth-first, skip root)
+        var allDirs = new List<FileSystemItem>();
+        var allFiles = new List<FileSystemItem>();
+        CollectItems(scanResult, allDirs, allFiles);
+
+        // Top Consumers: largest directories (excluding current root level, show deeper ones)
+        var topDirs = allDirs
+            .Where(d => d.Size > 0)
+            .OrderByDescending(d => d.Size)
+            .Take(8)
+            .ToList();
+
+        TopConsumers.Clear();
+        foreach (var dir in topDirs)
+            TopConsumers.Add(dir);
+
+        // File Type Breakdown: group files by extension
+        var typeGroups = allFiles
+            .Where(f => f.Size > 0)
+            .GroupBy(f => Path.GetExtension(f.Name).ToLowerInvariant())
+            .Select(g => new FileTypeInfo
+            {
+                Extension = string.IsNullOrEmpty(g.Key) ? "(no ext)" : g.Key,
+                TotalSize = g.Sum(f => f.Size),
+                FileCount = g.Count()
+            })
+            .OrderByDescending(t => t.TotalSize)
+            .Take(6)
+            .ToList();
+
+        var totalFileSize = typeGroups.Sum(t => t.TotalSize);
+        foreach (var t in typeGroups)
+            t.Percentage = totalFileSize > 0 ? (double)t.TotalSize / totalFileSize * 100 : 0;
+
+        FileTypeBreakdown.Clear();
+        foreach (var t in typeGroups)
+            FileTypeBreakdown.Add(t);
+
+        // Pie Chart: current level items by size
+        UpdatePieChart();
+    }
+
+    private void UpdatePieChart()
+    {
+        PieChartSlices.Clear();
+        var items = CurrentItems
+            .Where(i => i.Size > 0 && i.IsScanned)
+            .OrderByDescending(i => i.Size)
+            .ToList();
+
+        if (items.Count == 0) return;
+
+        var total = items.Sum(i => i.Size);
+        // Show top 7 individually, group the rest as "Others"
+        var topItems = items.Take(7).ToList();
+        var othersSize = items.Skip(7).Sum(i => i.Size);
+
+        foreach (var item in topItems)
+        {
+            var pct = total > 0 ? (double)item.Size / total * 100 : 0;
+            PieChartSlices.Add(new PieSliceData
+            {
+                Name = item.Name,
+                Value = item.Size,
+                Percentage = pct,
+                SizeDisplay = FileSystemItem.FormatSize(item.Size),
+                Tag = item
+            });
+        }
+
+        if (othersSize > 0)
+        {
+            var pct = total > 0 ? (double)othersSize / total * 100 : 0;
+            PieChartSlices.Add(new PieSliceData
+            {
+                Name = $"Others ({items.Count - 7} items)",
+                Value = othersSize,
+                Percentage = pct,
+                SizeDisplay = FileSystemItem.FormatSize(othersSize),
+                Tag = null
+            });
+        }
+    }
+
+    private static void CollectItems(FileSystemItem item, List<FileSystemItem> dirs, List<FileSystemItem> files)
+    {
+        foreach (var child in item.Children)
+        {
+            if (child.IsDirectory)
+            {
+                dirs.Add(child);
+                CollectItems(child, dirs, files);
+            }
+            else
+            {
+                files.Add(child);
+            }
+        }
     }
 
     [RelayCommand]
@@ -673,6 +787,9 @@ public partial class MainViewModel : ObservableObject
             }
 
             StatusMessage = $"Scanned {ScannedItems} items | Total: {FileSystemItem.FormatSize(TotalSize)}";
+
+            // Update analytics panels
+            UpdateScanAnalytics(result);
         }
         catch (OperationCanceledException)
         {
@@ -763,6 +880,80 @@ public partial class MainViewModel : ObservableObject
     {
         await _settingsService.SaveAsync();
     }
+
+    #region Settings Panel
+
+    [ObservableProperty]
+    private bool _isSettingsOpen;
+
+    [ObservableProperty]
+    private string _settingsLMStudioUrl = "http://localhost:1234";
+
+    [ObservableProperty]
+    private double _settingsAITemperature = 0.3;
+
+    [ObservableProperty]
+    private int _settingsAIMaxTokens = 256;
+
+    [ObservableProperty]
+    private int _settingsCacheExpirationDays = 7;
+
+    [ObservableProperty]
+    private string _settingsExcludePatterns = "";
+
+    [RelayCommand]
+    private void OpenSettings()
+    {
+        // Load current values into settings panel fields
+        SettingsLMStudioUrl = _settingsService.Settings.LMStudioUrl;
+        SettingsAITemperature = _settingsService.Settings.AITemperature;
+        SettingsAIMaxTokens = _settingsService.Settings.AIMaxTokens;
+        SettingsCacheExpirationDays = _settingsService.Settings.CacheExpirationDays;
+        SettingsExcludePatterns = _settingsService.Settings.ExcludePatterns;
+        IsSettingsOpen = true;
+    }
+
+    [RelayCommand]
+    private async Task SaveSettingsPanelAsync()
+    {
+        _settingsService.Settings.LMStudioUrl = SettingsLMStudioUrl;
+        _settingsService.Settings.AITemperature = Math.Clamp(SettingsAITemperature, 0.0, 2.0);
+        _settingsService.Settings.AIMaxTokens = Math.Clamp(SettingsAIMaxTokens, 64, 4096);
+        _settingsService.Settings.CacheExpirationDays = Math.Clamp(SettingsCacheExpirationDays, 1, 90);
+        _settingsService.Settings.ExcludePatterns = SettingsExcludePatterns;
+
+        // Apply LM Studio URL change
+        _lmStudioService.UpdateBaseUrl(SettingsLMStudioUrl);
+
+        await _settingsService.SaveAsync();
+        IsSettingsOpen = false;
+        StatusMessage = "Settings saved";
+    }
+
+    [RelayCommand]
+    private void CloseSettings()
+    {
+        IsSettingsOpen = false;
+    }
+
+    [RelayCommand]
+    private async Task ClearScanCacheAsync()
+    {
+        await _cacheService.ClearAllCacheAsync();
+        _scanCache.Clear();
+        StatusMessage = "Scan cache cleared";
+    }
+
+    [RelayCommand]
+    private async Task ClearRecentFoldersAsync()
+    {
+        _settingsService.Settings.RecentFolders.Clear();
+        RecentFolders.Clear();
+        await _settingsService.SaveAsync();
+        StatusMessage = "Recent folders cleared";
+    }
+
+    #endregion
 
     [RelayCommand]
     private async Task AskAIAsync()

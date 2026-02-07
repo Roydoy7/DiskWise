@@ -5,12 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:DiskWise.ViewModels"
         xmlns:converters="clr-namespace:DiskWise.Converters"
+        xmlns:controls="clr-namespace:DiskWise.Controls"
         mc:Ignorable="d"
         Title="DiskWise - Disk Space Analyzer"
         Height="800" Width="1200"
         MinHeight="600" MinWidth="900"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="False"
         Background="{StaticResource BackgroundBrush}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
 
     <Window.DataContext>
         <vm:MainViewModel/>
@@ -20,6 +30,7 @@
         <converters:SizeToStringConverter x:Key="SizeConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVis"/>
+        <converters:PercentageToWidthConverter x:Key="PercentToWidth"/>
         <converters:BindingProxy x:Key="ViewModelProxy" Data="{Binding}"/>
 
         <!-- File/Folder Context Menu -->
@@ -30,7 +41,7 @@
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource AccentBlueBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <!-- Open File (files only) -->
@@ -40,7 +51,7 @@
                       Visibility="{Binding IsDirectory, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE8A7;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Open in Explorer"
@@ -48,7 +59,7 @@
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xEC50;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Open in Terminal"
@@ -56,7 +67,7 @@
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
 
@@ -90,7 +101,7 @@
                       InputGestureText="Ctrl+Shift+C">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Copy Name"
@@ -98,7 +109,7 @@
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                               Foreground="{StaticResource TextMutedBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
 
@@ -110,7 +121,7 @@
                       CommandParameter="{Binding}">
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Delete Permanently"
@@ -129,14 +140,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Navigation Bar - Modern Design -->
-        <Border Grid.Row="0" Background="{StaticResource CardBrush}"
-                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
-                Padding="12,8">
+        <!-- Custom Title Bar -->
+        <Grid Grid.Row="0" Background="{StaticResource BackgroundSecondaryBrush}" Height="36">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- App Icon + Title -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0"
+                        WindowChrome.IsHitTestVisibleInChrome="False">
+                <!-- Neon cyan hex icon -->
+                <TextBlock Text="&#xED39;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                           Foreground="{StaticResource AccentBlueBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="DISK" FontFamily="Consolas" FontSize="13" FontWeight="Bold"
+                           Foreground="{StaticResource AccentBlueBrush}" VerticalAlignment="Center"/>
+                <TextBlock Text="WISE" FontFamily="Consolas" FontSize="13" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <TextBlock Text=" // v1.0" FontFamily="Consolas" FontSize="10"
+                           Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" Margin="6,1,0,0"/>
+            </StackPanel>
+
+            <!-- Window Control Buttons -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Stretch"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                <!-- Minimize -->
+                <Button x:Name="MinimizeButton" Click="MinimizeButton_Click"
+                        Style="{StaticResource WindowControlButton}" ToolTip="Minimize">
+                    <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </Button>
+                <!-- Maximize/Restore -->
+                <Button x:Name="MaximizeButton" Click="MaximizeButton_Click"
+                        Style="{StaticResource WindowControlButton}" ToolTip="Maximize">
+                    <TextBlock x:Name="MaximizeIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </Button>
+                <!-- Close -->
+                <Button x:Name="CloseButton" Click="CloseButton_Click"
+                        Style="{StaticResource WindowCloseButton}" ToolTip="Close">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Navigation Bar - Cyberpunk Glass -->
+        <Border Grid.Row="1" Background="{StaticResource BackgroundTertiaryBrush}"
+                BorderThickness="0,0,0,1" Padding="12,8">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="#4000E5FF"/>
+            </Border.BorderBrush>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -151,34 +208,34 @@
                             IsEnabled="{Binding CanGoBack}"
                             ToolTip="Back (Alt+Left)"
                             Width="36" Height="36">
-                        <TextBlock Text="◀️" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoForwardCommand}"
                             IsEnabled="{Binding CanGoForward}"
                             ToolTip="Forward (Alt+Right)"
                             Width="36" Height="36">
-                        <TextBlock Text="▶️" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoUpCommand}"
                             IsEnabled="{Binding CanGoUp}"
                             ToolTip="Up (Alt+Up)"
                             Width="36" Height="36">
-                        <TextBlock Text="▲" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="&#xE74A;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding GoHomeCommand}"
                             ToolTip="Home"
                             Width="36" Height="36">
-                        <TextBlock Text="🏠" FontSize="14"/>
+                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                 </StackPanel>
 
                 <!-- Path Display - Breadcrumb Navigation -->
                 <Border Grid.Column="1" Background="{StaticResource BackgroundBrush}"
                         CornerRadius="8" Padding="8,6" Margin="0,0,16,0"
-                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                        BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1">
                     <ItemsControl ItemsSource="{Binding Breadcrumbs}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -216,7 +273,7 @@
                                                 </Setter>
                                             </Style>
                                         </Button.Style>
-                                        <TextBlock Text="{Binding Name}" FontSize="13" FontFamily="Segoe UI">
+                                        <TextBlock Text="{Binding Name}" FontSize="13" FontFamily="Consolas">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="{StaticResource AccentBlueBrush}"/>
@@ -229,9 +286,10 @@
                                             </TextBlock.Style>
                                         </TextBlock>
                                     </Button>
-                                    <TextBlock Text="›" FontSize="14" FontWeight="Bold"
-                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                    <TextBlock Text="/" FontSize="14" FontWeight="Bold"
+                                               Foreground="{StaticResource TextMutedBrush}"
                                                VerticalAlignment="Center" Margin="2,0"
+                                               FontFamily="Consolas"
                                                Visibility="{Binding IsLast, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -239,15 +297,15 @@
                     </ItemsControl>
                 </Border>
 
-                <!-- Action Buttons - Modern -->
+                <!-- Action Buttons -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Style="{StaticResource BlueAccentButton}"
                             Command="{Binding ScanCurrentFolderCommand}"
                             Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"
                             Margin="0,0,8,0" Padding="16,8">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F50D;" FontSize="13" Margin="0,0,6,0"/>
-                            <TextBlock Text="Scan" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0"/>
+                            <TextBlock Text="SCAN" FontSize="12" FontWeight="Bold" FontFamily="Consolas"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource ModernButton}"
@@ -255,32 +313,33 @@
                             Visibility="{Binding IsScanning, Converter={StaticResource BooleanToVis}}"
                             Margin="0,0,8,0" Padding="16,8">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x23F9;" FontSize="13" Margin="0,0,6,0"/>
-                            <TextBlock Text="Stop" FontSize="13"/>
+                            <TextBlock Text="&#xE71A;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0"/>
+                            <TextBlock Text="STOP" FontSize="12" FontFamily="Consolas"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             Command="{Binding RefreshCommand}"
                             ToolTip="Refresh"
                             Width="36" Height="36">
-                        <TextBlock Text="&#x1F504;" FontSize="14"/>
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                     <Button Style="{StaticResource IconButton}"
                             ToolTip="Settings"
+                            Command="{Binding OpenSettingsCommand}"
                             Width="36" Height="36">
-                        <TextBlock Text="&#x2699;" FontSize="16"/>
+                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                     </Button>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Toolbar - Modern Design -->
-        <Border Grid.Row="1" Background="{StaticResource BackgroundBrush}"
+        <!-- Toolbar - Cyberpunk Glass -->
+        <Border Grid.Row="2" Background="{StaticResource BackgroundSecondaryBrush}"
                 Padding="12,8"
                 BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Sort:" Foreground="{StaticResource TextSecondaryBrush}"
-                           FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="SORT:" Foreground="{StaticResource TextMutedBrush}"
+                           FontSize="11" FontFamily="Consolas" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <ComboBox Width="90" SelectedIndex="{Binding SortByIndex}" Margin="0,0,20,0">
                     <ComboBoxItem Content="Size"/>
                     <ComboBoxItem Content="Name"/>
@@ -302,9 +361,9 @@
                 <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="8,4"/>
 
                 <!-- Search Box -->
-                <Border Background="{StaticResource CardBrush}" CornerRadius="6"
+                <Border Background="{StaticResource CardBrush}" CornerRadius="8"
                         Padding="8,4" Margin="16,0,0,0" VerticalAlignment="Center"
-                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                        BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
                         Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
@@ -312,7 +371,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="&#x1F50D;" FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                   Foreground="{StaticResource TextMutedBrush}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                  Background="Transparent" BorderThickness="0"
@@ -323,7 +383,8 @@
                                 Command="{Binding ClearSearchCommand}"
                                 Width="20" Height="20"
                                 Visibility="{Binding IsSearchMode, Converter={StaticResource BooleanToVis}}">
-                            <TextBlock Text="&#x2715;" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                       Foreground="{StaticResource TextMutedBrush}"/>
                         </Button>
                     </Grid>
                 </Border>
@@ -331,25 +392,19 @@
                 <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="16,4,8,4"
                            Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
 
-                <TextBlock Text="AI Provider:" Foreground="{StaticResource TextSecondaryBrush}"
-                           FontSize="12" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                <TextBlock Text="AI:" Foreground="{StaticResource AccentPurpleBrush}"
+                           FontSize="11" FontFamily="Consolas" FontWeight="Bold"
+                           VerticalAlignment="Center" Margin="8,0,8,0"/>
                 <ComboBox Width="110" SelectedIndex="{Binding CurrentAIProviderIndex, Mode=TwoWay}">
                     <ComboBoxItem Content="LM Studio"/>
                     <ComboBoxItem Content="Gemini"/>
                     <ComboBoxItem Content="None"/>
                 </ComboBox>
-                <!--<Border Background="{StaticResource SafeBrush}" CornerRadius="10"
-                        Padding="4,2" Margin="8,0,0,0" VerticalAlignment="Center"
-                        Visibility="{Binding IsAIConnected, Converter={StaticResource BooleanToVis}}">
-                    <TextBlock Text="√" Foreground="White" Margin="5"
-                               VerticalAlignment="Center"
-                               FontSize="10" FontWeight="SemiBold"/>
-                </Border>-->
             </StackPanel>
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="280"/>
@@ -363,15 +418,22 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="8">
                             <!-- Recent Folders -->
-                            <TextBlock Text="&#x1F553; Recent Locations" Style="{StaticResource SectionHeader}"
-                                       Visibility="{Binding RecentFolders.Count, Converter={StaticResource BoolToVis}}"
-                                       FontSize="15"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,24,0,16"
+                                        Visibility="{Binding RecentFolders.Count, Converter={StaticResource BoolToVis}}">
+                                <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="RECENT_LOCATIONS" FontFamily="Consolas"
+                                           Foreground="{StaticResource AccentBlueBrush}"
+                                           FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
                             <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="8" Margin="0,0,0,24"
+                                    BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
                                     Visibility="{Binding RecentFolders.Count, Converter={StaticResource BoolToVis}}">
                                 <ItemsControl ItemsSource="{Binding RecentFolders}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Padding="8,6" Cursor="Hand" CornerRadius="6"
+                                            <Border Padding="10,8" Cursor="Hand" CornerRadius="8"
                                                     MouseLeftButtonDown="RecentFolder_Click">
                                                 <Border.Style>
                                                     <Style TargetType="Border">
@@ -389,21 +451,22 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="&#x1F4C1;" FontSize="14"
-                                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                                               Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="0" Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets"
+                                                               FontSize="14"
+                                                               Foreground="{StaticResource AccentBlueBrush}"
+                                                               Margin="0,0,12,0" VerticalAlignment="Center"/>
                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                         <TextBlock Text="{Binding Name}"
                                                                    Foreground="{StaticResource TextPrimaryBrush}"
                                                                    FontSize="13" FontWeight="Medium"/>
                                                         <TextBlock Text="{Binding Path}"
-                                                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                                                   FontSize="10"
+                                                                   Foreground="{StaticResource TextMutedBrush}"
+                                                                   FontSize="10" FontFamily="Consolas"
                                                                    TextTrimming="CharacterEllipsis"/>
                                                     </StackPanel>
                                                     <TextBlock Grid.Column="2" Text="{Binding LastAccessedDisplay}"
                                                                Foreground="{StaticResource TextMutedBrush}"
-                                                               FontSize="11"
+                                                               FontSize="11" FontFamily="Consolas"
                                                                VerticalAlignment="Center" Margin="12,0,0,0"/>
                                                 </Grid>
                                             </Border>
@@ -413,8 +476,14 @@
                             </Border>
 
                             <!-- Drives -->
-                            <TextBlock Text="&#x1F4BE; Devices and Drives" Style="{StaticResource SectionHeader}"
-                                       FontSize="15"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="&#xEDA2;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="DEVICES_AND_DRIVES" FontFamily="Consolas"
+                                           Foreground="{StaticResource AccentBlueBrush}"
+                                           FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
                             <ItemsControl ItemsSource="{Binding Drives}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -423,25 +492,22 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border CornerRadius="10" Padding="12" Margin="4"
-                                                Width="180" Cursor="Hand"
-                                                MouseLeftButtonDown="Drive_Click">
+                                        <Border CornerRadius="12" Padding="14" Margin="4"
+                                                Width="190" Cursor="Hand"
+                                                MouseLeftButtonDown="Drive_Click"
+                                                BorderThickness="1">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Setter Property="Background" Value="{StaticResource CardBrush}"/>
-                                                    <Setter Property="Effect">
-                                                        <Setter.Value>
-                                                            <DropShadowEffect BlurRadius="8" ShadowDepth="2"
-                                                                              Opacity="0.2" Color="Black"/>
-                                                        </Setter.Value>
-                                                    </Setter>
+                                                    <Setter Property="BorderBrush" Value="{StaticResource GlowCyanBorderBrush}"/>
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="Background" Value="{StaticResource CardHoverBrush}"/>
+                                                            <Setter Property="BorderBrush" Value="{StaticResource GlowCyanBorderHoverBrush}"/>
                                                             <Setter Property="Effect">
                                                                 <Setter.Value>
-                                                                    <DropShadowEffect BlurRadius="16" ShadowDepth="4"
-                                                                                      Opacity="0.3" Color="Black"/>
+                                                                    <DropShadowEffect BlurRadius="20" ShadowDepth="0"
+                                                                                      Opacity="0.25" Color="#00E5FF"/>
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </Trigger>
@@ -449,10 +515,12 @@
                                                 </Style>
                                             </Border.Style>
                                             <StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                    <!-- Drive Icon using Segoe MDL2 Assets -->
-                                                    <Border Width="36" Height="36" CornerRadius="8"
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                                    <!-- Drive Icon -->
+                                                    <Border Width="38" Height="38" CornerRadius="10"
                                                             Background="{StaticResource BackgroundBrush}"
+                                                            BorderBrush="{StaticResource GlowCyanBorderBrush}"
+                                                            BorderThickness="1"
                                                             Margin="0,0,12,0" VerticalAlignment="Center">
                                                         <TextBlock Text="&#xEDA2;" FontFamily="Segoe MDL2 Assets"
                                                                    FontSize="18" Foreground="{StaticResource AccentBlueBrush}"
@@ -463,21 +531,22 @@
                                                                    Foreground="{StaticResource TextPrimaryBrush}"
                                                                    FontWeight="SemiBold" FontSize="14"/>
                                                         <TextBlock Text="{Binding VolumeLabel}"
-                                                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                                                   FontSize="11"/>
+                                                                   Foreground="{StaticResource TextMutedBrush}"
+                                                                   FontSize="11" FontFamily="Consolas"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <ProgressBar Value="{Binding UsagePercentage, Mode=OneWay}"
                                                              Maximum="100" Height="6"
                                                              Style="{StaticResource DriveProgressBar}"
-                                                             Margin="0,0,0,6"/>
+                                                             Margin="0,0,0,8"/>
                                                 <Grid>
                                                     <TextBlock Text="{Binding UsageDisplay}"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                                               FontSize="11" HorizontalAlignment="Left"/>
+                                                               Foreground="{StaticResource TextMutedBrush}"
+                                                               FontSize="10" FontFamily="Consolas"
+                                                               HorizontalAlignment="Left"/>
                                                     <TextBlock Text="{Binding UsagePercentage, StringFormat='{}{0:F0}%'}"
-                                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                                               FontSize="11" FontWeight="SemiBold"
+                                                               Foreground="{StaticResource AccentBlueBrush}"
+                                                               FontSize="12" FontWeight="Bold" FontFamily="Consolas"
                                                                HorizontalAlignment="Right"/>
                                                 </Grid>
                                             </StackPanel>
@@ -493,10 +562,8 @@
                 <Grid Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                     <!-- Normal List View -->
                     <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="4"
+                            BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
                             Visibility="{Binding IsSearchMode, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.15" Color="Black"/>
-                        </Border.Effect>
                         <ListBox ItemsSource="{Binding CurrentItems}"
                                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                  Background="Transparent"
@@ -550,9 +617,9 @@
                                             <ProgressBar Value="{Binding Percentage, Mode=OneWay}" Maximum="100"
                                                          Height="4" Style="{StaticResource SizeProgressBar}"
                                                          Visibility="{Binding IsScanned, Converter={StaticResource BooleanToVis}}"/>
-                                            <TextBlock Text="—"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"
-                                                       FontSize="10"
+                                            <TextBlock Text="--"
+                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                       FontSize="10" FontFamily="Consolas"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsScanned, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"/>
                                         </Grid>
@@ -561,21 +628,21 @@
                                         <TextBlock Grid.Column="3"
                                                    Text="{Binding Size, Converter={StaticResource SizeConverter}}"
                                                    Foreground="{StaticResource TextSecondaryBrush}"
-                                                   FontSize="11"
+                                                   FontSize="11" FontFamily="Consolas"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Right"/>
 
                                         <!-- Date -->
                                         <TextBlock Grid.Column="4"
                                                    Text="{Binding LastModifiedDisplay}"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                                   FontSize="10"
+                                                   Foreground="{StaticResource TextMutedBrush}"
+                                                   FontSize="10" FontFamily="Consolas"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Right"/>
 
                                         <!-- AI Advice -->
                                         <TextBlock Grid.Column="5"
-                                                   Text="{Binding Advice.Icon, FallbackValue='—'}"
+                                                   Text="{Binding Advice.Icon, FallbackValue='--'}"
                                                    FontSize="12"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Center"/>
@@ -587,10 +654,8 @@
 
                     <!-- Search Results View -->
                     <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="4"
+                            BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
                             Visibility="{Binding IsSearchMode, Converter={StaticResource BooleanToVis}}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.15" Color="Black"/>
-                        </Border.Effect>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -599,25 +664,29 @@
 
                             <!-- Search Header -->
                             <Border Grid.Row="0" Background="{StaticResource BackgroundBrush}"
-                                    CornerRadius="8" Padding="12,8" Margin="8,8,8,4">
+                                    CornerRadius="8" Padding="12,8" Margin="8,8,8,4"
+                                    BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#x1F50D;" FontSize="14" Margin="0,0,8,0"
+                                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="14" Margin="0,0,8,0"
                                                    Foreground="{StaticResource AccentBlueBrush}"
                                                    VerticalAlignment="Center"/>
                                         <TextBlock Foreground="{StaticResource TextPrimaryBrush}"
-                                                   FontSize="13" VerticalAlignment="Center">
-                                            <Run Text="Search Results: "/>
-                                            <Run Text="{Binding SearchResultCount, Mode=OneWay}" FontWeight="SemiBold"/>
-                                            <Run Text=" items found"/>
+                                                   FontSize="13" FontFamily="Consolas" VerticalAlignment="Center">
+                                            <Run Text="RESULTS: "/>
+                                            <Run Text="{Binding SearchResultCount, Mode=OneWay}" FontWeight="SemiBold"
+                                                 Foreground="{StaticResource AccentBlueBrush}"/>
+                                            <Run Text=" items"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                                                 Visibility="{Binding IsSearching, Converter={StaticResource BooleanToVis}}">
-                                        <TextBlock Text="Searching..." FontSize="11"
-                                                   Foreground="{StaticResource TextMutedBrush}"
+                                        <TextBlock Text="SCANNING..." FontSize="11" FontFamily="Consolas"
+                                                   Foreground="{StaticResource AccentBlueBrush}"
                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                        <ProgressBar IsIndeterminate="True" Width="60" Height="4"/>
+                                        <ProgressBar IsIndeterminate="True" Width="60" Height="4"
+                                                     Style="{StaticResource SizeProgressBar}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -658,7 +727,7 @@
                                                            TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Text="{Binding Path}"
                                                            Foreground="{StaticResource TextMutedBrush}"
-                                                           FontSize="10"
+                                                           FontSize="10" FontFamily="Consolas"
                                                            TextTrimming="CharacterEllipsis"/>
                                             </StackPanel>
 
@@ -666,7 +735,7 @@
                                             <TextBlock Grid.Column="2"
                                                        Text="{Binding Size, Converter={StaticResource SizeConverter}}"
                                                        Foreground="{StaticResource TextSecondaryBrush}"
-                                                       FontSize="11"
+                                                       FontSize="11" FontFamily="Consolas"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Right"/>
                                         </Grid>
@@ -679,98 +748,24 @@
                 </Grid>
             </Border>
 
-            <!-- Detail Panel - Modern Design -->
+            <!-- Detail Panel - Purple AI Glow -->
             <Border Grid.Column="1" Background="{StaticResource CardBrush}"
-                    CornerRadius="12" Margin="4,12,12,12" Padding="16">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.2" Color="Black"/>
-                </Border.Effect>
+                    CornerRadius="12" Margin="4,12,12,12" Padding="16"
+                    BorderBrush="{StaticResource GlowPurpleBorderBrush}" BorderThickness="1">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <!-- AI Search Section - Hidden at Home -->
-                        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,16"
-                                Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
-                            <StackPanel>
-                                <TextBlock Text="&#x2728; AI Search"
-                                           Foreground="{StaticResource TextPrimaryBrush}"
-                                           FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
-
-                                <TextBlock Text="Describe what you're looking for:"
-                                           Foreground="{StaticResource TextSecondaryBrush}"
-                                           FontSize="11" Margin="0,0,0,6"/>
-
-                                <TextBox Text="{Binding AiSearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                                         Height="60" TextWrapping="Wrap" AcceptsReturn="True"
-                                         FontSize="12" Margin="0,0,0,8" Padding="5"
-                                         VerticalScrollBarVisibility="Auto"/>
-
-                                <Button Style="{StaticResource AccentButton}"
-                                        Command="{Binding AISearchCommand}"
-                                        IsEnabled="{Binding IsAISearching, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}"
-                                        HorizontalAlignment="Stretch"
-                                        Padding="10,8">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#x1F50D;" FontSize="12" Margin="0,0,6,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="AI Search"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsAISearching}" Value="True">
-                                                            <Setter Property="Text" Value="Searching..."/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Button>
-
-                                <!-- AI Search Results Info -->
-                                <StackPanel Margin="0,10,0,0"
-                                            Visibility="{Binding IsSearchMode, Converter={StaticResource BooleanToVis}}">
-                                    <TextBlock Text="Keywords used:"
-                                               Foreground="{StaticResource TextMutedBrush}"
-                                               FontSize="10" Margin="0,0,0,4"/>
-                                    <ItemsControl ItemsSource="{Binding AiSearchKeywords}" Margin="0,0,0,8">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Background="{StaticResource CardHoverBrush}"
-                                                        CornerRadius="4" Padding="6,3" Margin="0,0,4,4">
-                                                    <TextBlock Text="{Binding}" FontSize="10"
-                                                               Foreground="{StaticResource TextPrimaryBrush}"/>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                    <!-- Clear Search Button -->
-                                    <Button Style="{StaticResource ModernButton}"
-                                            Command="{Binding ClearAISearchCommand}"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="8,6">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <TextBlock Text="&#x2715;" FontSize="10" Margin="0,0,6,0"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
-                                            <TextBlock Text="Clear Results" FontSize="11"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
-                                        </StackPanel>
-                                    </Button>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
                         <!-- AI Analysis Section - Hidden at Home -->
                         <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,16"
+                                BorderBrush="{StaticResource GlowPurpleBorderBrush}" BorderThickness="1"
                                 Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                             <StackPanel>
-                                <TextBlock Text="&#x1F916; Folder Analysis"
-                                           Foreground="{StaticResource TextPrimaryBrush}"
-                                           FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="ANALYSIS" FontFamily="Consolas"
+                                               Foreground="{StaticResource AccentPurpleBrush}"
+                                               FontWeight="Bold" FontSize="14"/>
+                                </StackPanel>
 
                                 <TextBlock Text="Click 'Analyze' to check if safe to delete"
                                            Foreground="{StaticResource TextSecondaryBrush}"
@@ -785,7 +780,7 @@
                                                        Foreground="White" VerticalAlignment="Center"/>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding DisplayedAdvice.Level}"
-                                                           Foreground="White"
+                                                           Foreground="White" FontFamily="Consolas"
                                                            FontSize="14" FontWeight="Bold"/>
                                                 <TextBlock Text="AI Recommendation"
                                                            Foreground="#FFFFFFCC"
@@ -797,6 +792,17 @@
                                                Foreground="{StaticResource TextSecondaryBrush}"
                                                FontSize="12" LineHeight="20"
                                                TextWrapping="Wrap"/>
+
+                                    <!-- AI Disclaimer -->
+                                    <Border Background="#0AFFD600" CornerRadius="4" Padding="8,6" Margin="0,10,0,0"
+                                            BorderBrush="#33FFD600" BorderThickness="1">
+                                        <TextBlock TextWrapping="Wrap" FontSize="9" FontFamily="Consolas"
+                                                   Foreground="{StaticResource TextMutedBrush}" LineHeight="14">
+                                            <Run Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="9"
+                                                 Foreground="#99FFD600"/><Run Text=" "/>
+                                            <Run Text="AI-generated analysis for reference only. Results may be inaccurate. Please verify before deleting any files. Use at your own risk."/>
+                                        </TextBlock>
+                                    </Border>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -804,13 +810,22 @@
                         <!-- Action Buttons - Hidden at Home -->
                         <StackPanel Margin="0,0,0,16"
                                     Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                            <Button Style="{StaticResource BlueAccentButton}"
+                                    Command="{Binding ScanCurrentFolderCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,8" Padding="12,10">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="SCAN" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
+                                </StackPanel>
+                            </Button>
                             <Button Style="{StaticResource PurpleAccentButton}"
                                     Command="{Binding AskAICommand}"
                                     HorizontalAlignment="Stretch"
                                     Margin="0,0,0,8" Padding="12,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="&#x1F916;" FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Analyze" FontSize="13" FontWeight="SemiBold"/>
+                                    <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="ANALYZE" FontSize="13" FontWeight="SemiBold" FontFamily="Consolas"/>
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource ModernButton}"
@@ -818,7 +833,7 @@
                                     HorizontalAlignment="Stretch"
                                     Margin="0,0,0,8" Padding="12,10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="&#x1F4C2;" FontSize="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="&#xEC50;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
                                     <TextBlock Text="Open in Explorer" FontSize="13"/>
                                 </StackPanel>
                             </Button>
@@ -828,7 +843,7 @@
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource ModernButton}">
                                         <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource GlowPinkBorderBrush}"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
@@ -838,41 +853,211 @@
                                     </Style>
                                 </Button.Style>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="&#x1F5D1;" FontSize="14" Margin="0,0,8,0"
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"
                                                Foreground="{StaticResource DangerBrush}"/>
-                                    <TextBlock Text="Delete" FontSize="13"
+                                    <TextBlock Text="DELETE" FontSize="13" FontFamily="Consolas"
                                                Foreground="{StaticResource DangerBrush}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
 
+                        <!-- Size Distribution Pie Chart - Visible after scan -->
+                        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,16"
+                                BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
+                                Visibility="{Binding PieChartSlices.Count, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="SIZE_MAP" FontFamily="Consolas"
+                                               Foreground="{StaticResource AccentBlueBrush}"
+                                               FontWeight="Bold" FontSize="14"/>
+                                </StackPanel>
+
+                                <!-- Donut Chart -->
+                                <controls:PieChartControl
+                                    Height="180" Width="180"
+                                    HorizontalAlignment="Center"
+                                    ItemsSource="{Binding PieChartSlices}"
+                                    SliceClicked="PieChart_SliceClicked"
+                                    Margin="0,4,0,10"/>
+
+                                <!-- Legend -->
+                                <ItemsControl ItemsSource="{Binding PieChartSlices}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,3" Cursor="Hand"
+                                                  MouseLeftButtonDown="PieLegend_Click">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Fill}"
+                                                         VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}"
+                                                           FontSize="10" FontFamily="Consolas"
+                                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat='{}{0:F1}%'}"
+                                                           FontSize="10" FontFamily="Consolas"
+                                                           Foreground="{StaticResource TextMutedBrush}"
+                                                           VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Top Space Consumers - Visible after scan -->
+                        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,16"
+                                BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
+                                Visibility="{Binding TopConsumers.Count, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="TOP_CONSUMERS" FontFamily="Consolas"
+                                               Foreground="{StaticResource AccentBlueBrush}"
+                                               FontWeight="Bold" FontSize="12"/>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding TopConsumers}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="6,5" Margin="0,0,0,2" CornerRadius="4"
+                                                    Background="Transparent" Cursor="Hand"
+                                                    MouseLeftButtonDown="TopConsumer_Click">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#0A00E5FF"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Name}" FontSize="11" FontFamily="Consolas"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding Path}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding SizeDisplay}"
+                                                               FontSize="11" FontFamily="Consolas"
+                                                               Foreground="{StaticResource AccentBlueBrush}"
+                                                               Margin="8,0,0,0"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- File Type Breakdown - Visible after scan -->
+                        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,16"
+                                BorderBrush="{StaticResource GlowPurpleBorderBrush}" BorderThickness="1"
+                                Visibility="{Binding FileTypeBreakdown.Count, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="FILE_TYPES" FontFamily="Consolas"
+                                               Foreground="{StaticResource AccentPurpleBrush}"
+                                               FontWeight="Bold" FontSize="12"/>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding FileTypeBreakdown}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0,0,0,8">
+                                                <Grid Margin="0,0,0,3">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Extension}" FontSize="11" FontFamily="Consolas"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                    <TextBlock Grid.Column="1" FontSize="10" FontFamily="Consolas"
+                                                               Foreground="{StaticResource TextMutedBrush}"
+                                                               HorizontalAlignment="Right" Margin="0,0,6,0">
+                                                        <Run Text="{Binding FileCount, Mode=OneWay}"/><Run Text=" files"/>
+                                                    </TextBlock>
+                                                    <TextBlock Grid.Column="2" Text="{Binding SizeDisplay}"
+                                                               FontSize="11" FontFamily="Consolas"
+                                                               Foreground="{StaticResource AccentPurpleBrush}"/>
+                                                </Grid>
+                                                <!-- Mini progress bar -->
+                                                <Grid Height="3" Background="{StaticResource BackgroundSecondaryBrush}">
+                                                    <Border HorizontalAlignment="Left"
+                                                            CornerRadius="1.5" Height="3"
+                                                            Width="{Binding Percentage, Converter={StaticResource PercentToWidth}}">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                <GradientStop Color="#B24BF3" Offset="0"/>
+                                                                <GradientStop Color="#00E5FF" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>
+                                                </Grid>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
                         <!-- Home Welcome Panel -->
                         <StackPanel Visibility="{Binding IsAtHome, Converter={StaticResource BooleanToVis}}">
-                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="16" Margin="0,0,0,16">
+                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="16" Margin="0,0,0,16"
+                                    BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="&#x1F680; Welcome" FontSize="16" FontWeight="Bold"
-                                               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                        <TextBlock Text="DISK_WISE" FontFamily="Consolas" FontSize="16" FontWeight="Bold"
+                                                   Foreground="{StaticResource AccentBlueBrush}"/>
+                                    </StackPanel>
                                     <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="20"
                                                Foreground="{StaticResource TextSecondaryBrush}">
-                                        <Run Text="DiskWise helps you analyze disk space and identify files safe to delete."/>
+                                        <Run Text="Intelligent disk space analyzer with AI-powered cleanup recommendations."/>
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
-                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="16">
+                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10" Padding="16"
+                                    BorderBrush="{StaticResource GlowPurpleBorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="&#x1F4A1; Quick Tips" FontSize="14" FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,10"/>
-                                    <StackPanel Margin="0,0,0,6">
-                                        <TextBlock Text="1. Select a drive or recent folder" FontSize="11"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE82F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                   Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
+                                        <TextBlock Text="QUICK_START" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="{StaticResource AccentPurpleBrush}"/>
                                     </StackPanel>
                                     <StackPanel Margin="0,0,0,6">
-                                        <TextBlock Text="2. Click 'Scan' to analyze sizes" FontSize="11"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock FontSize="11" FontFamily="Consolas"
+                                                   Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="01." Foreground="{StaticResource AccentBlueBrush}"/>
+                                            <Run Text=" Select a drive or recent folder"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,6">
+                                        <TextBlock FontSize="11" FontFamily="Consolas"
+                                                   Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="02." Foreground="{StaticResource AccentBlueBrush}"/>
+                                            <Run Text=" Click 'SCAN' to analyze sizes"/>
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel>
-                                        <TextBlock Text="3. Use AI to check if safe to delete" FontSize="11"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock FontSize="11" FontFamily="Consolas"
+                                                   Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="03." Foreground="{StaticResource AccentPurpleBrush}"/>
+                                            <Run Text=" Use AI to check if safe to delete"/>
+                                        </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
@@ -882,29 +1067,34 @@
                         <StackPanel Visibility="{Binding IsAtHome, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                             <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,0,0,16"/>
 
-                            <TextBlock Text="&#x1F4CB; Item Details"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontWeight="Bold" FontSize="14" Margin="0,0,0,12"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="DETAILS" FontFamily="Consolas"
+                                           Foreground="{StaticResource AccentBlueBrush}"
+                                           FontWeight="Bold" FontSize="14"/>
+                            </StackPanel>
 
                             <!-- No Selection - Show Current Folder Info -->
                             <StackPanel Visibility="{Binding SelectedItem, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
                                 <TextBlock Text="{Binding CurrentPathDisplay}"
                                            Foreground="{StaticResource TextPrimaryBrush}"
-                                           FontWeight="SemiBold" FontSize="13"
+                                           FontWeight="SemiBold" FontSize="13" FontFamily="Consolas"
                                            TextWrapping="Wrap" Margin="0,0,0,8"/>
 
-                                <TextBlock Text="Select an item to view detailed information"
-                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                <TextBlock Text="Select an item to view details"
+                                           Foreground="{StaticResource TextMutedBrush}"
                                            FontSize="12" FontStyle="Italic"
                                            TextWrapping="Wrap"/>
                             </StackPanel>
 
                             <!-- Selected Item Details -->
                             <StackPanel Visibility="{Binding SelectedItem, Converter={StaticResource BoolToVis}}">
-                                <Border Background="{StaticResource BackgroundBrush}" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                                <Border Background="{StaticResource BackgroundBrush}" CornerRadius="8" Padding="12" Margin="0,0,0,12"
+                                        BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1">
                                     <TextBlock Text="{Binding SelectedItem.Name}"
-                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                               FontWeight="Bold" FontSize="14"
+                                               Foreground="{StaticResource AccentBlueBrush}"
+                                               FontWeight="Bold" FontSize="14" FontFamily="Consolas"
                                                TextWrapping="Wrap"/>
                                 </Border>
 
@@ -920,38 +1110,38 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Path"
-                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                               FontSize="11" Margin="0,0,0,4"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="PATH" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedItem.Path}"
-                                               Foreground="{StaticResource TextPrimaryBrush}"
-                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,12"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Size"
                                                Foreground="{StaticResource TextSecondaryBrush}"
-                                               FontSize="11" Margin="0,0,0,4"/>
+                                               FontSize="11" FontFamily="Consolas" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="SIZE" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1"
                                                Text="{Binding SelectedItem.Size, Converter={StaticResource SizeConverter}}"
                                                Foreground="{StaticResource AccentBlueBrush}"
-                                               FontSize="16" FontWeight="Bold" Margin="0,0,0,12"/>
+                                               FontSize="18" FontWeight="Bold" FontFamily="Consolas" Margin="0,0,0,12"/>
 
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Files"
-                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                               FontSize="11" Margin="0,0,0,4"
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="FILES" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               FontSize="10" Margin="0,0,0,4"
                                                Visibility="{Binding SelectedItem.IsDirectory, Converter={StaticResource BooleanToVis}}"/>
                                     <TextBlock Grid.Row="2" Grid.Column="1"
-                                               Text="{Binding SelectedItem.FileCount, StringFormat='{}{0:N0} files'}"
+                                               Text="{Binding SelectedItem.FileCount, StringFormat='{}{0:N0}'}"
                                                Foreground="{StaticResource TextPrimaryBrush}"
-                                               FontSize="12" Margin="0,0,0,12"
+                                               FontSize="12" FontFamily="Consolas" Margin="0,0,0,12"
                                                Visibility="{Binding SelectedItem.IsDirectory, Converter={StaticResource BooleanToVis}}"/>
 
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Modified"
-                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                               FontSize="11" Margin="0,0,0,4"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="MODIFIED" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               FontSize="10" Margin="0,0,0,4"/>
                                     <TextBlock Grid.Row="3" Grid.Column="1"
                                                Text="{Binding SelectedItem.LastModified, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
                                                Foreground="{StaticResource TextPrimaryBrush}"
-                                               FontSize="12"/>
+                                               FontSize="12" FontFamily="Consolas"/>
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
@@ -960,35 +1150,225 @@
             </Border>
         </Grid>
 
-        <!-- Status Bar - Modern Design -->
-        <Border Grid.Row="3" Background="{StaticResource CardBrush}"
-                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"
-                Padding="16,10">
+        <!-- Status Bar - Terminal Style -->
+        <Border Grid.Row="4" Background="{StaticResource BackgroundSecondaryBrush}"
+                BorderThickness="0,1,0,0" Padding="16,10">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="#2000E5FF"/>
+            </Border.BorderBrush>
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="{Binding StatusMessage}"
+                <!-- Status Indicator -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,12,0">
+                    <Ellipse Width="8" Height="8" Margin="0,0,8,0" VerticalAlignment="Center">
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Fill" Value="#00FF88"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsScanning}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource AccentBlueBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="READY" FontFamily="Consolas" FontSize="11"
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#00FF88"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsScanning}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource AccentBlueBrush}"/>
+                                        <Setter Property="Text" Value="SCANNING"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1" Text="{Binding StatusMessage}"
                            Foreground="{StaticResource TextSecondaryBrush}"
-                           FontSize="12" FontFamily="Segoe UI"
+                           FontSize="11" FontFamily="Consolas"
                            VerticalAlignment="Center"/>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
                             Visibility="{Binding IsScanning, Converter={StaticResource BooleanToVis}}">
                     <Border Background="{StaticResource BackgroundBrush}" CornerRadius="10"
+                            BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
                             Padding="12,6" Margin="0,0,12,0">
                         <StackPanel Orientation="Horizontal">
                             <ProgressBar IsIndeterminate="True" Width="100" Height="4" Margin="0,0,12,0"
                                          Style="{StaticResource SizeProgressBar}"/>
-                            <TextBlock Text="{Binding ScannedItems, StringFormat='Scanned: {0:N0} items'}"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ScannedItems, StringFormat='ITEMS: {0:N0}'}"
+                                       Foreground="{StaticResource AccentBlueBrush}"
+                                       FontSize="11" FontWeight="SemiBold" FontFamily="Consolas"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
             </Grid>
         </Border>
+
+        <!-- Settings Overlay -->
+        <Grid Grid.RowSpan="5" Visibility="{Binding IsSettingsOpen, Converter={StaticResource BooleanToVis}}">
+            <!-- Dark backdrop -->
+            <Border Background="#CC080B14" MouseLeftButtonDown="SettingsOverlay_BackdropClick"/>
+
+            <!-- Settings Card -->
+            <Border Background="{StaticResource CardBrush}" CornerRadius="12"
+                    BorderBrush="{StaticResource GlowCyanBorderBrush}" BorderThickness="1"
+                    MaxWidth="620" MaxHeight="600" Margin="40"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Padding="32,28">
+                <Border.Effect>
+                    <DropShadowEffect Color="#00E5FF" BlurRadius="30" ShadowDepth="0" Opacity="0.15"/>
+                </Border.Effect>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,16,0">
+                    <StackPanel>
+                        <!-- Header -->
+                        <Grid Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,10,0"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="SETTINGS" FontFamily="Consolas" FontSize="18" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentBlueBrush}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Button Style="{StaticResource IconButton}" HorizontalAlignment="Right"
+                                    Command="{Binding CloseSettingsCommand}" Width="32" Height="32">
+                                <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                            </Button>
+                        </Grid>
+
+                        <!-- AI Configuration Section -->
+                        <StackPanel Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="AI_CONFIG" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentPurpleBrush}"/>
+                            </StackPanel>
+
+                            <!-- LM Studio URL -->
+                            <TextBlock Text="LM Studio Endpoint" FontSize="11" FontFamily="Consolas"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                            <TextBox Text="{Binding SettingsLMStudioUrl, UpdateSourceTrigger=PropertyChanged}"
+                                     FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,12"/>
+
+                            <!-- Temperature -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,8,0">
+                                    <TextBlock Text="Temperature" FontSize="11" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding SettingsAITemperature, UpdateSourceTrigger=PropertyChanged}"
+                                             FontFamily="Consolas" FontSize="12" Padding="8,6"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Max Tokens" FontSize="11" FontFamily="Consolas"
+                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding SettingsAIMaxTokens, UpdateSourceTrigger=PropertyChanged}"
+                                             FontFamily="Consolas" FontSize="12" Padding="8,6"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,0,0,20"/>
+
+                        <!-- Scan Settings Section -->
+                        <StackPanel Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="SCAN_CONFIG" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentBlueBrush}"/>
+                            </StackPanel>
+
+                            <!-- Cache Expiration -->
+                            <TextBlock FontSize="11" FontFamily="Consolas"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4">
+                                <Run Text="Cache Expiration (days)"/>
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsCacheExpirationDays, UpdateSourceTrigger=PropertyChanged}"
+                                     FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,12"
+                                     Width="100" HorizontalAlignment="Left"/>
+
+                            <!-- Exclude Patterns -->
+                            <TextBlock FontSize="11" FontFamily="Consolas"
+                                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4">
+                                <Run Text="Exclude Patterns (comma-separated)"/>
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsExcludePatterns, UpdateSourceTrigger=PropertyChanged}"
+                                     FontFamily="Consolas" FontSize="12" Padding="8,6" Margin="0,0,0,4"/>
+                            <TextBlock Text="e.g. node_modules, .git, __pycache__" FontSize="10"
+                                       Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas"
+                                       Margin="0,0,0,12"/>
+                        </StackPanel>
+
+                        <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,0,0,20"/>
+
+                        <!-- Maintenance Section -->
+                        <StackPanel Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="MAINTENANCE" FontFamily="Consolas" FontSize="12" FontWeight="Bold"
+                                           Foreground="{StaticResource AccentBlueBrush}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource ModernButton}"
+                                        Command="{Binding ClearScanCacheCommand}"
+                                        Padding="12,8" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                   Margin="0,0,6,0"/>
+                                        <TextBlock Text="Clear Cache" FontSize="11" FontFamily="Consolas"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource ModernButton}"
+                                        Command="{Binding ClearRecentFoldersCommand}"
+                                        Padding="12,8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                   Margin="0,0,6,0"/>
+                                        <TextBlock Text="Clear Recents" FontSize="11" FontFamily="Consolas"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,0,0,20"/>
+
+                        <!-- Save / Cancel Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource ModernButton}"
+                                    Command="{Binding CloseSettingsCommand}"
+                                    Padding="16,8" Margin="0,0,8,0">
+                                <TextBlock Text="CANCEL" FontSize="12" FontFamily="Consolas"/>
+                            </Button>
+                            <Button Style="{StaticResource AccentButton}"
+                                    Command="{Binding SaveSettingsPanelCommand}"
+                                    Padding="16,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               Margin="0,0,6,0"/>
+                                    <TextBlock Text="SAVE" FontSize="12" FontFamily="Consolas" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

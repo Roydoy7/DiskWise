@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskWise", "DiskWise.csproj", "{C5252122-D819-6669-4DEE-AEEBD48451E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5252122-D819-6669-4DEE-AEEBD48451E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5252122-D819-6669-4DEE-AEEBD48451E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5252122-D819-6669-4DEE-AEEBD48451E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5252122-D819-6669-4DEE-AEEBD48451E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA14F5AF-A2DE-4C6A-965D-36F901A0334F}
+	EndGlobalSection
+EndGlobal

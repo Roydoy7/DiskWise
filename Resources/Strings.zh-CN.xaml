@@ -1,0 +1,103 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="Nav_Back">返回</sys:String>
+    <sys:String x:Key="Nav_Forward">前进</sys:String>
+    <sys:String x:Key="Nav_Up">上级目录</sys:String>
+    <sys:String x:Key="Nav_Home">主页</sys:String>
+    <sys:String x:Key="Nav_ThisPC">此电脑</sys:String>
+
+    <!-- Actions -->
+    <sys:String x:Key="Action_Scan">扫描</sys:String>
+    <sys:String x:Key="Action_ScanThis">扫描此目录</sys:String>
+    <sys:String x:Key="Action_Stop">停止</sys:String>
+    <sys:String x:Key="Action_Refresh">刷新</sys:String>
+    <sys:String x:Key="Action_Delete">删除</sys:String>
+    <sys:String x:Key="Action_AskAI">询问 AI</sys:String>
+    <sys:String x:Key="Action_OpenInExplorer">在资源管理器中打开</sys:String>
+    <sys:String x:Key="Action_Settings">设置</sys:String>
+
+    <!-- Sort -->
+    <sys:String x:Key="Sort_Label">排序:</sys:String>
+    <sys:String x:Key="Sort_Size">大小</sys:String>
+    <sys:String x:Key="Sort_Name">名称</sys:String>
+    <sys:String x:Key="Sort_Date">日期</sys:String>
+
+    <!-- Display Options -->
+    <sys:String x:Key="Display_ShowHidden">显示隐藏</sys:String>
+    <sys:String x:Key="Display_ShowFiles">显示文件</sys:String>
+
+    <!-- AI -->
+    <sys:String x:Key="AI_Label">AI:</sys:String>
+    <sys:String x:Key="AI_LMStudio">LM Studio</sys:String>
+    <sys:String x:Key="AI_Gemini">Gemini</sys:String>
+    <sys:String x:Key="AI_None">无</sys:String>
+    <sys:String x:Key="AI_Advice">AI 建议</sys:String>
+    <sys:String x:Key="AI_NotAnalyzed">未分析</sys:String>
+    <sys:String x:Key="AI_Analyzing">分析中...</sys:String>
+    <sys:String x:Key="AI_Safe">可安全删除</sys:String>
+    <sys:String x:Key="AI_Caution">谨慎删除</sys:String>
+    <sys:String x:Key="AI_Danger">不建议删除</sys:String>
+
+    <!-- Home Page -->
+    <sys:String x:Key="Home_Recent">最近访问</sys:String>
+    <sys:String x:Key="Home_Drives">设备和驱动器</sys:String>
+    <sys:String x:Key="Home_SelectFolder">选择文件夹...</sys:String>
+
+    <!-- Detail Panel -->
+    <sys:String x:Key="Detail_Title">详情</sys:String>
+    <sys:String x:Key="Detail_SelectItem">选择项目以查看详情</sys:String>
+    <sys:String x:Key="Detail_Path">路径:</sys:String>
+    <sys:String x:Key="Detail_Size">大小:</sys:String>
+    <sys:String x:Key="Detail_Files">文件数:</sys:String>
+    <sys:String x:Key="Detail_Folders">文件夹数:</sys:String>
+    <sys:String x:Key="Detail_Modified">修改时间:</sys:String>
+
+    <!-- Status -->
+    <sys:String x:Key="Status_Ready">就绪</sys:String>
+    <sys:String x:Key="Status_Loading">加载中...</sys:String>
+    <sys:String x:Key="Status_Scanning">扫描中: {0}</sys:String>
+    <sys:String x:Key="Status_Scanned">已扫描 {0} 项</sys:String>
+    <sys:String x:Key="Status_Total">总计: {0}</sys:String>
+    <sys:String x:Key="Status_Cleanable">可清理: {0}</sys:String>
+    <sys:String x:Key="Status_Folders">个文件夹</sys:String>
+    <sys:String x:Key="Status_Files">个文件</sys:String>
+    <sys:String x:Key="Status_AccessDenied">访问被拒绝</sys:String>
+
+    <!-- Time -->
+    <sys:String x:Key="Time_JustNow">刚刚</sys:String>
+    <sys:String x:Key="Time_MinutesAgo">{0} 分钟前</sys:String>
+    <sys:String x:Key="Time_HoursAgo">{0} 小时前</sys:String>
+    <sys:String x:Key="Time_Yesterday">昨天</sys:String>
+    <sys:String x:Key="Time_DaysAgo">{0} 天前</sys:String>
+    <sys:String x:Key="Time_LastWeek">上周</sys:String>
+
+    <!-- Delete Dialog -->
+    <sys:String x:Key="Delete_Title">确认删除</sys:String>
+    <sys:String x:Key="Delete_Message">确定要删除以下项目吗？</sys:String>
+    <sys:String x:Key="Delete_ToRecycleBin">移至回收站</sys:String>
+    <sys:String x:Key="Delete_Permanently">永久删除</sys:String>
+    <sys:String x:Key="Delete_Warning">警告: 此操作无法撤销</sys:String>
+    <sys:String x:Key="Delete_AIWarning">AI 建议不要删除此项目</sys:String>
+    <sys:String x:Key="Delete_Confirm">删除</sys:String>
+    <sys:String x:Key="Delete_Cancel">取消</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Settings_Title">设置</sys:String>
+    <sys:String x:Key="Settings_Language">语言</sys:String>
+    <sys:String x:Key="Settings_AI">AI 设置</sys:String>
+    <sys:String x:Key="Settings_LMStudioUrl">LM Studio 地址</sys:String>
+    <sys:String x:Key="Settings_TestConnection">测试连接</sys:String>
+    <sys:String x:Key="Settings_Connected">已连接</sys:String>
+    <sys:String x:Key="Settings_Disconnected">未连接</sys:String>
+    <sys:String x:Key="Settings_Save">保存</sys:String>
+
+    <!-- Drive Types -->
+    <sys:String x:Key="Drive_Local">本地磁盘</sys:String>
+    <sys:String x:Key="Drive_Removable">可移动磁盘</sys:String>
+    <sys:String x:Key="Drive_Network">网络驱动器</sys:String>
+    <sys:String x:Key="Drive_CDROM">CD/DVD 驱动器</sys:String>
+
+</ResourceDictionary>

@@ -1,0 +1,103 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="Nav_Back">Back</sys:String>
+    <sys:String x:Key="Nav_Forward">Forward</sys:String>
+    <sys:String x:Key="Nav_Up">Up</sys:String>
+    <sys:String x:Key="Nav_Home">Home</sys:String>
+    <sys:String x:Key="Nav_ThisPC">This PC</sys:String>
+
+    <!-- Actions -->
+    <sys:String x:Key="Action_Scan">Scan</sys:String>
+    <sys:String x:Key="Action_ScanThis">Scan This Folder</sys:String>
+    <sys:String x:Key="Action_Stop">Stop</sys:String>
+    <sys:String x:Key="Action_Refresh">Refresh</sys:String>
+    <sys:String x:Key="Action_Delete">Delete</sys:String>
+    <sys:String x:Key="Action_AskAI">Ask AI</sys:String>
+    <sys:String x:Key="Action_OpenInExplorer">Open in Explorer</sys:String>
+    <sys:String x:Key="Action_Settings">Settings</sys:String>
+
+    <!-- Sort -->
+    <sys:String x:Key="Sort_Label">Sort:</sys:String>
+    <sys:String x:Key="Sort_Size">Size</sys:String>
+    <sys:String x:Key="Sort_Name">Name</sys:String>
+    <sys:String x:Key="Sort_Date">Date</sys:String>
+
+    <!-- Display Options -->
+    <sys:String x:Key="Display_ShowHidden">Show Hidden</sys:String>
+    <sys:String x:Key="Display_ShowFiles">Show Files</sys:String>
+
+    <!-- AI -->
+    <sys:String x:Key="AI_Label">AI:</sys:String>
+    <sys:String x:Key="AI_LMStudio">LM Studio</sys:String>
+    <sys:String x:Key="AI_Gemini">Gemini</sys:String>
+    <sys:String x:Key="AI_None">None</sys:String>
+    <sys:String x:Key="AI_Advice">AI Advice</sys:String>
+    <sys:String x:Key="AI_NotAnalyzed">Not analyzed</sys:String>
+    <sys:String x:Key="AI_Analyzing">Analyzing...</sys:String>
+    <sys:String x:Key="AI_Safe">Safe to delete</sys:String>
+    <sys:String x:Key="AI_Caution">Delete with caution</sys:String>
+    <sys:String x:Key="AI_Danger">Do not delete</sys:String>
+
+    <!-- Home Page -->
+    <sys:String x:Key="Home_Recent">Recent</sys:String>
+    <sys:String x:Key="Home_Drives">Devices and Drives</sys:String>
+    <sys:String x:Key="Home_SelectFolder">Select Folder...</sys:String>
+
+    <!-- Detail Panel -->
+    <sys:String x:Key="Detail_Title">Details</sys:String>
+    <sys:String x:Key="Detail_SelectItem">Select an item to view details</sys:String>
+    <sys:String x:Key="Detail_Path">Path:</sys:String>
+    <sys:String x:Key="Detail_Size">Size:</sys:String>
+    <sys:String x:Key="Detail_Files">Files:</sys:String>
+    <sys:String x:Key="Detail_Folders">Folders:</sys:String>
+    <sys:String x:Key="Detail_Modified">Modified:</sys:String>
+
+    <!-- Status -->
+    <sys:String x:Key="Status_Ready">Ready</sys:String>
+    <sys:String x:Key="Status_Loading">Loading...</sys:String>
+    <sys:String x:Key="Status_Scanning">Scanning: {0}</sys:String>
+    <sys:String x:Key="Status_Scanned">Scanned {0} items</sys:String>
+    <sys:String x:Key="Status_Total">Total: {0}</sys:String>
+    <sys:String x:Key="Status_Cleanable">Cleanable: {0}</sys:String>
+    <sys:String x:Key="Status_Folders">folders</sys:String>
+    <sys:String x:Key="Status_Files">files</sys:String>
+    <sys:String x:Key="Status_AccessDenied">Access denied</sys:String>
+
+    <!-- Time -->
+    <sys:String x:Key="Time_JustNow">Just now</sys:String>
+    <sys:String x:Key="Time_MinutesAgo">{0} min ago</sys:String>
+    <sys:String x:Key="Time_HoursAgo">{0} hours ago</sys:String>
+    <sys:String x:Key="Time_Yesterday">Yesterday</sys:String>
+    <sys:String x:Key="Time_DaysAgo">{0} days ago</sys:String>
+    <sys:String x:Key="Time_LastWeek">Last week</sys:String>
+
+    <!-- Delete Dialog -->
+    <sys:String x:Key="Delete_Title">Confirm Delete</sys:String>
+    <sys:String x:Key="Delete_Message">Are you sure you want to delete the following items?</sys:String>
+    <sys:String x:Key="Delete_ToRecycleBin">Move to Recycle Bin</sys:String>
+    <sys:String x:Key="Delete_Permanently">Delete Permanently</sys:String>
+    <sys:String x:Key="Delete_Warning">Warning: This action cannot be undone</sys:String>
+    <sys:String x:Key="Delete_AIWarning">AI advises against deleting this item</sys:String>
+    <sys:String x:Key="Delete_Confirm">Delete</sys:String>
+    <sys:String x:Key="Delete_Cancel">Cancel</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Settings_Title">Settings</sys:String>
+    <sys:String x:Key="Settings_Language">Language</sys:String>
+    <sys:String x:Key="Settings_AI">AI Settings</sys:String>
+    <sys:String x:Key="Settings_LMStudioUrl">LM Studio URL</sys:String>
+    <sys:String x:Key="Settings_TestConnection">Test Connection</sys:String>
+    <sys:String x:Key="Settings_Connected">Connected</sys:String>
+    <sys:String x:Key="Settings_Disconnected">Disconnected</sys:String>
+    <sys:String x:Key="Settings_Save">Save</sys:String>
+
+    <!-- Drive Types -->
+    <sys:String x:Key="Drive_Local">Local Disk</sys:String>
+    <sys:String x:Key="Drive_Removable">Removable Disk</sys:String>
+    <sys:String x:Key="Drive_Network">Network Drive</sys:String>
+    <sys:String x:Key="Drive_CDROM">CD/DVD Drive</sys:String>
+
+</ResourceDictionary>

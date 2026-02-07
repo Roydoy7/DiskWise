@@ -31,6 +31,8 @@ jobs:
           --self-contained true
           -p:PublishSingleFile=true
           -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }}
+          -p:GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}
           --output ./publish
 
       - name: Create ZIP archive

@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release -p:GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }} -p:GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

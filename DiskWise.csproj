@@ -8,6 +8,21 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <!-- OAuth credentials: pass via -p:GoogleClientId=xxx -p:GoogleClientSecret=xxx -->
+  <PropertyGroup>
+    <GoogleClientId Condition="'$(GoogleClientId)' == ''"></GoogleClientId>
+    <GoogleClientSecret Condition="'$(GoogleClientSecret)' == ''"></GoogleClientSecret>
+  </PropertyGroup>
+
+  <Target Name="GenerateSecrets" BeforeTargets="CoreCompile">
+    <WriteLinesToFile File="$(IntermediateOutputPath)Secrets.g.cs"
+                     Lines="namespace DiskWise%3B;internal static class Secrets;{;    internal const string GoogleClientId = &quot;$(GoogleClientId)&quot;%3B;    internal const string GoogleClientSecret = &quot;$(GoogleClientSecret)&quot;%3B;}"
+                     Overwrite="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)Secrets.g.cs" />
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />

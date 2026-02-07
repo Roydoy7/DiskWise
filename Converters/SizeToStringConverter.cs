@@ -49,13 +49,13 @@ public class SizeToStringConverter : IValueConverter
 public class AdviceLevelToColorConverter : IValueConverter
 {
     private static readonly System.Windows.Media.SolidColorBrush SafeBrush =
-        new(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50));
+        new(System.Windows.Media.Color.FromRgb(0x00, 0xFF, 0x88));   // Neon green
     private static readonly System.Windows.Media.SolidColorBrush CautionBrush =
-        new(System.Windows.Media.Color.FromRgb(0xFF, 0x98, 0x00));
+        new(System.Windows.Media.Color.FromRgb(0xFF, 0xD6, 0x00));   // Neon yellow
     private static readonly System.Windows.Media.SolidColorBrush DangerBrush =
-        new(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36));
+        new(System.Windows.Media.Color.FromRgb(0xFF, 0x2D, 0x78));   // Neon pink
     private static readonly System.Windows.Media.SolidColorBrush UnknownBrush =
-        new(System.Windows.Media.Color.FromRgb(0x80, 0x80, 0x80));
+        new(System.Windows.Media.Color.FromRgb(0x3D, 0x44, 0x58));   // Muted
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -121,12 +121,12 @@ public class PercentageToWidthConverter : IValueConverter
     {
         if (value is double percentage)
         {
-            double maxWidth = 100; // Default max width
-            if (parameter is double max)
-            {
+            double maxWidth = 200; // Default max width
+            if (parameter is string s && double.TryParse(s, out var parsed))
+                maxWidth = parsed;
+            else if (parameter is double max)
                 maxWidth = max;
-            }
-            return percentage / 100 * maxWidth;
+            return Math.Max(0, percentage / 100 * maxWidth);
         }
         return 0.0;
     }

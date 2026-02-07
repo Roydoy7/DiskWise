@@ -10,17 +10,34 @@
     <sys:String x:Key="Nav_ThisPC">This PC</sys:String>
 
     <!-- Actions -->
-    <sys:String x:Key="Action_Scan">Scan</sys:String>
+    <sys:String x:Key="Action_Scan">SCAN</sys:String>
     <sys:String x:Key="Action_ScanThis">Scan This Folder</sys:String>
-    <sys:String x:Key="Action_Stop">Stop</sys:String>
+    <sys:String x:Key="Action_Stop">STOP</sys:String>
     <sys:String x:Key="Action_Refresh">Refresh</sys:String>
-    <sys:String x:Key="Action_Delete">Delete</sys:String>
+    <sys:String x:Key="Action_Delete">DELETE</sys:String>
+    <sys:String x:Key="Action_Analyze">ANALYZE</sys:String>
     <sys:String x:Key="Action_AskAI">Ask AI</sys:String>
     <sys:String x:Key="Action_OpenInExplorer">Open in Explorer</sys:String>
     <sys:String x:Key="Action_Settings">Settings</sys:String>
 
+    <!-- Context Menu -->
+    <sys:String x:Key="Context_Open">Open</sys:String>
+    <sys:String x:Key="Context_OpenDefaultApp">Open with Default App</sys:String>
+    <sys:String x:Key="Context_OpenInExplorer">Open in Explorer</sys:String>
+    <sys:String x:Key="Context_OpenInTerminal">Open in Terminal</sys:String>
+    <sys:String x:Key="Context_ScanFolder">Scan Folder</sys:String>
+    <sys:String x:Key="Context_AIAnalyze">AI Analyze</sys:String>
+    <sys:String x:Key="Context_CopyPath">Copy Path</sys:String>
+    <sys:String x:Key="Context_CopyName">Copy Name</sys:String>
+
+    <!-- Window -->
+    <sys:String x:Key="Window_Minimize">Minimize</sys:String>
+    <sys:String x:Key="Window_Maximize">Maximize</sys:String>
+    <sys:String x:Key="Window_Restore">Restore</sys:String>
+    <sys:String x:Key="Window_Close">Close</sys:String>
+
     <!-- Sort -->
-    <sys:String x:Key="Sort_Label">Sort:</sys:String>
+    <sys:String x:Key="Sort_Label">SORT:</sys:String>
     <sys:String x:Key="Sort_Size">Size</sys:String>
     <sys:String x:Key="Sort_Name">Name</sys:String>
     <sys:String x:Key="Sort_Date">Date</sys:String>
@@ -34,29 +51,51 @@
     <sys:String x:Key="AI_LMStudio">LM Studio</sys:String>
     <sys:String x:Key="AI_Gemini">Gemini</sys:String>
     <sys:String x:Key="AI_None">None</sys:String>
+    <sys:String x:Key="AI_Analysis">ANALYSIS</sys:String>
     <sys:String x:Key="AI_Advice">AI Advice</sys:String>
+    <sys:String x:Key="AI_ClickToAnalyze">Click 'Analyze' to check if safe to delete</sys:String>
+    <sys:String x:Key="AI_Recommendation">AI Recommendation</sys:String>
+    <sys:String x:Key="AI_Disclaimer">AI-generated analysis for reference only. Results may be inaccurate. Please verify before deleting any files. Use at your own risk.</sys:String>
     <sys:String x:Key="AI_NotAnalyzed">Not analyzed</sys:String>
     <sys:String x:Key="AI_Analyzing">Analyzing...</sys:String>
     <sys:String x:Key="AI_Safe">Safe to delete</sys:String>
     <sys:String x:Key="AI_Caution">Delete with caution</sys:String>
     <sys:String x:Key="AI_Danger">Do not delete</sys:String>
 
+    <!-- Search -->
+    <sys:String x:Key="Search_Results">RESULTS:</sys:String>
+    <sys:String x:Key="Search_Items">items</sys:String>
+    <sys:String x:Key="Search_Scanning">SCANNING...</sys:String>
+
     <!-- Home Page -->
-    <sys:String x:Key="Home_Recent">Recent</sys:String>
-    <sys:String x:Key="Home_Drives">Devices and Drives</sys:String>
+    <sys:String x:Key="Home_Recent">RECENT_LOCATIONS</sys:String>
+    <sys:String x:Key="Home_Drives">DEVICES_AND_DRIVES</sys:String>
     <sys:String x:Key="Home_SelectFolder">Select Folder...</sys:String>
+    <sys:String x:Key="Home_Description">Intelligent disk space analyzer with AI-powered cleanup recommendations.</sys:String>
+    <sys:String x:Key="Home_QuickStart">QUICK_START</sys:String>
+    <sys:String x:Key="Home_Step1">Select a drive or recent folder</sys:String>
+    <sys:String x:Key="Home_Step2">Click 'SCAN' to analyze sizes</sys:String>
+    <sys:String x:Key="Home_Step3">Use AI to check if safe to delete</sys:String>
+
+    <!-- Section Headers -->
+    <sys:String x:Key="Section_SizeMap">SIZE_MAP</sys:String>
+    <sys:String x:Key="Section_TopConsumers">TOP_CONSUMERS</sys:String>
+    <sys:String x:Key="Section_FileTypes">FILE_TYPES</sys:String>
+    <sys:String x:Key="Section_Details">DETAILS</sys:String>
+    <sys:String x:Key="Section_Files">files</sys:String>
 
     <!-- Detail Panel -->
     <sys:String x:Key="Detail_Title">Details</sys:String>
     <sys:String x:Key="Detail_SelectItem">Select an item to view details</sys:String>
-    <sys:String x:Key="Detail_Path">Path:</sys:String>
-    <sys:String x:Key="Detail_Size">Size:</sys:String>
-    <sys:String x:Key="Detail_Files">Files:</sys:String>
+    <sys:String x:Key="Detail_Path">PATH</sys:String>
+    <sys:String x:Key="Detail_Size">SIZE</sys:String>
+    <sys:String x:Key="Detail_Files">FILES</sys:String>
     <sys:String x:Key="Detail_Folders">Folders:</sys:String>
-    <sys:String x:Key="Detail_Modified">Modified:</sys:String>
+    <sys:String x:Key="Detail_Modified">MODIFIED</sys:String>
 
     <!-- Status -->
-    <sys:String x:Key="Status_Ready">Ready</sys:String>
+    <sys:String x:Key="Status_Ready">READY</sys:String>
+    <sys:String x:Key="Status_ScanningLabel">SCANNING</sys:String>
     <sys:String x:Key="Status_Loading">Loading...</sys:String>
     <sys:String x:Key="Status_Scanning">Scanning: {0}</sys:String>
     <sys:String x:Key="Status_Scanned">Scanned {0} items</sys:String>
@@ -85,14 +124,24 @@
     <sys:String x:Key="Delete_Cancel">Cancel</sys:String>
 
     <!-- Settings -->
-    <sys:String x:Key="Settings_Title">Settings</sys:String>
-    <sys:String x:Key="Settings_Language">Language</sys:String>
-    <sys:String x:Key="Settings_AI">AI Settings</sys:String>
-    <sys:String x:Key="Settings_LMStudioUrl">LM Studio URL</sys:String>
+    <sys:String x:Key="Settings_Title">SETTINGS</sys:String>
+    <sys:String x:Key="Settings_Language">LANGUAGE</sys:String>
+    <sys:String x:Key="Settings_AI">AI_CONFIG</sys:String>
+    <sys:String x:Key="Settings_LMStudioUrl">LM Studio Endpoint</sys:String>
+    <sys:String x:Key="Settings_Temperature">Temperature</sys:String>
+    <sys:String x:Key="Settings_MaxTokens">Max Tokens</sys:String>
+    <sys:String x:Key="Settings_ScanConfig">SCAN_CONFIG</sys:String>
+    <sys:String x:Key="Settings_CacheExpiration">Cache Expiration (days)</sys:String>
+    <sys:String x:Key="Settings_ExcludePatterns">Exclude Patterns (comma-separated)</sys:String>
+    <sys:String x:Key="Settings_ExcludePatternsHint">e.g. node_modules, .git, __pycache__</sys:String>
+    <sys:String x:Key="Settings_Maintenance">MAINTENANCE</sys:String>
+    <sys:String x:Key="Settings_ClearCache">Clear Cache</sys:String>
+    <sys:String x:Key="Settings_ClearRecents">Clear Recents</sys:String>
     <sys:String x:Key="Settings_TestConnection">Test Connection</sys:String>
     <sys:String x:Key="Settings_Connected">Connected</sys:String>
     <sys:String x:Key="Settings_Disconnected">Disconnected</sys:String>
-    <sys:String x:Key="Settings_Save">Save</sys:String>
+    <sys:String x:Key="Settings_Save">SAVE</sys:String>
+    <sys:String x:Key="Settings_Cancel">CANCEL</sys:String>
 
     <!-- Drive Types -->
     <sys:String x:Key="Drive_Local">Local Disk</sys:String>

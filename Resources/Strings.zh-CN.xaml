@@ -15,9 +15,26 @@
     <sys:String x:Key="Action_Stop">停止</sys:String>
     <sys:String x:Key="Action_Refresh">刷新</sys:String>
     <sys:String x:Key="Action_Delete">删除</sys:String>
+    <sys:String x:Key="Action_Analyze">分析</sys:String>
     <sys:String x:Key="Action_AskAI">询问 AI</sys:String>
     <sys:String x:Key="Action_OpenInExplorer">在资源管理器中打开</sys:String>
     <sys:String x:Key="Action_Settings">设置</sys:String>
+
+    <!-- Context Menu -->
+    <sys:String x:Key="Context_Open">打开</sys:String>
+    <sys:String x:Key="Context_OpenDefaultApp">使用默认应用打开</sys:String>
+    <sys:String x:Key="Context_OpenInExplorer">在资源管理器中打开</sys:String>
+    <sys:String x:Key="Context_OpenInTerminal">在终端中打开</sys:String>
+    <sys:String x:Key="Context_ScanFolder">扫描文件夹</sys:String>
+    <sys:String x:Key="Context_AIAnalyze">AI 分析</sys:String>
+    <sys:String x:Key="Context_CopyPath">复制路径</sys:String>
+    <sys:String x:Key="Context_CopyName">复制名称</sys:String>
+
+    <!-- Window -->
+    <sys:String x:Key="Window_Minimize">最小化</sys:String>
+    <sys:String x:Key="Window_Maximize">最大化</sys:String>
+    <sys:String x:Key="Window_Restore">还原</sys:String>
+    <sys:String x:Key="Window_Close">关闭</sys:String>
 
     <!-- Sort -->
     <sys:String x:Key="Sort_Label">排序:</sys:String>
@@ -34,29 +51,51 @@
     <sys:String x:Key="AI_LMStudio">LM Studio</sys:String>
     <sys:String x:Key="AI_Gemini">Gemini</sys:String>
     <sys:String x:Key="AI_None">无</sys:String>
+    <sys:String x:Key="AI_Analysis">分析</sys:String>
     <sys:String x:Key="AI_Advice">AI 建议</sys:String>
+    <sys:String x:Key="AI_ClickToAnalyze">点击"分析"检查是否可以安全删除</sys:String>
+    <sys:String x:Key="AI_Recommendation">AI 推荐</sys:String>
+    <sys:String x:Key="AI_Disclaimer">AI 生成的分析仅供参考，结果可能不准确。请在删除任何文件前自行确认。风险自担。</sys:String>
     <sys:String x:Key="AI_NotAnalyzed">未分析</sys:String>
     <sys:String x:Key="AI_Analyzing">分析中...</sys:String>
     <sys:String x:Key="AI_Safe">可安全删除</sys:String>
     <sys:String x:Key="AI_Caution">谨慎删除</sys:String>
     <sys:String x:Key="AI_Danger">不建议删除</sys:String>
 
+    <!-- Search -->
+    <sys:String x:Key="Search_Results">结果:</sys:String>
+    <sys:String x:Key="Search_Items">项</sys:String>
+    <sys:String x:Key="Search_Scanning">搜索中...</sys:String>
+
     <!-- Home Page -->
     <sys:String x:Key="Home_Recent">最近访问</sys:String>
     <sys:String x:Key="Home_Drives">设备和驱动器</sys:String>
     <sys:String x:Key="Home_SelectFolder">选择文件夹...</sys:String>
+    <sys:String x:Key="Home_Description">智能磁盘空间分析器，提供 AI 驱动的清理建议。</sys:String>
+    <sys:String x:Key="Home_QuickStart">快速开始</sys:String>
+    <sys:String x:Key="Home_Step1">选择驱动器或最近的文件夹</sys:String>
+    <sys:String x:Key="Home_Step2">点击"扫描"分析文件大小</sys:String>
+    <sys:String x:Key="Home_Step3">使用 AI 检查是否可以安全删除</sys:String>
+
+    <!-- Section Headers -->
+    <sys:String x:Key="Section_SizeMap">大小分布</sys:String>
+    <sys:String x:Key="Section_TopConsumers">空间占用排行</sys:String>
+    <sys:String x:Key="Section_FileTypes">文件类型</sys:String>
+    <sys:String x:Key="Section_Details">详情</sys:String>
+    <sys:String x:Key="Section_Files">个文件</sys:String>
 
     <!-- Detail Panel -->
     <sys:String x:Key="Detail_Title">详情</sys:String>
     <sys:String x:Key="Detail_SelectItem">选择项目以查看详情</sys:String>
-    <sys:String x:Key="Detail_Path">路径:</sys:String>
-    <sys:String x:Key="Detail_Size">大小:</sys:String>
-    <sys:String x:Key="Detail_Files">文件数:</sys:String>
+    <sys:String x:Key="Detail_Path">路径</sys:String>
+    <sys:String x:Key="Detail_Size">大小</sys:String>
+    <sys:String x:Key="Detail_Files">文件数</sys:String>
     <sys:String x:Key="Detail_Folders">文件夹数:</sys:String>
-    <sys:String x:Key="Detail_Modified">修改时间:</sys:String>
+    <sys:String x:Key="Detail_Modified">修改时间</sys:String>
 
     <!-- Status -->
     <sys:String x:Key="Status_Ready">就绪</sys:String>
+    <sys:String x:Key="Status_ScanningLabel">扫描中</sys:String>
     <sys:String x:Key="Status_Loading">加载中...</sys:String>
     <sys:String x:Key="Status_Scanning">扫描中: {0}</sys:String>
     <sys:String x:Key="Status_Scanned">已扫描 {0} 项</sys:String>
@@ -89,10 +128,20 @@
     <sys:String x:Key="Settings_Language">语言</sys:String>
     <sys:String x:Key="Settings_AI">AI 设置</sys:String>
     <sys:String x:Key="Settings_LMStudioUrl">LM Studio 地址</sys:String>
+    <sys:String x:Key="Settings_Temperature">温度</sys:String>
+    <sys:String x:Key="Settings_MaxTokens">最大 Token</sys:String>
+    <sys:String x:Key="Settings_ScanConfig">扫描设置</sys:String>
+    <sys:String x:Key="Settings_CacheExpiration">缓存过期（天）</sys:String>
+    <sys:String x:Key="Settings_ExcludePatterns">排除模式（逗号分隔）</sys:String>
+    <sys:String x:Key="Settings_ExcludePatternsHint">例如 node_modules, .git, __pycache__</sys:String>
+    <sys:String x:Key="Settings_Maintenance">维护</sys:String>
+    <sys:String x:Key="Settings_ClearCache">清除缓存</sys:String>
+    <sys:String x:Key="Settings_ClearRecents">清除最近访问</sys:String>
     <sys:String x:Key="Settings_TestConnection">测试连接</sys:String>
     <sys:String x:Key="Settings_Connected">已连接</sys:String>
     <sys:String x:Key="Settings_Disconnected">未连接</sys:String>
     <sys:String x:Key="Settings_Save">保存</sys:String>
+    <sys:String x:Key="Settings_Cancel">取消</sys:String>
 
     <!-- Drive Types -->
     <sys:String x:Key="Drive_Local">本地磁盘</sys:String>

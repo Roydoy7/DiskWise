@@ -269,6 +269,9 @@ public partial class MainViewModel : ObservableObject
 
         // Apply LM Studio URL
         _lmStudioService.UpdateBaseUrl(_settingsService.Settings.LMStudioUrl);
+
+        // Apply language
+        App.ApplyLanguage(_settingsService.Settings.Language);
     }
 
     private async Task LoadDrivesAsync()
@@ -901,6 +904,11 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string _settingsExcludePatterns = "";
 
+    [ObservableProperty]
+    private int _settingsLanguageIndex;
+
+    private static readonly string[] LanguageCodes = ["en-US", "zh-CN", "ja-JP"];
+
     [RelayCommand]
     private void OpenSettings()
     {
@@ -910,6 +918,7 @@ public partial class MainViewModel : ObservableObject
         SettingsAIMaxTokens = _settingsService.Settings.AIMaxTokens;
         SettingsCacheExpirationDays = _settingsService.Settings.CacheExpirationDays;
         SettingsExcludePatterns = _settingsService.Settings.ExcludePatterns;
+        SettingsLanguageIndex = Math.Max(0, Array.IndexOf(LanguageCodes, _settingsService.Settings.Language));
         IsSettingsOpen = true;
     }
 
@@ -924,6 +933,11 @@ public partial class MainViewModel : ObservableObject
 
         // Apply LM Studio URL change
         _lmStudioService.UpdateBaseUrl(SettingsLMStudioUrl);
+
+        // Apply language change
+        var langCode = LanguageCodes[Math.Clamp(SettingsLanguageIndex, 0, LanguageCodes.Length - 1)];
+        _settingsService.Settings.Language = langCode;
+        App.ApplyLanguage(langCode);
 
         await _settingsService.SaveAsync();
         IsSettingsOpen = false;

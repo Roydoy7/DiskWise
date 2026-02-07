@@ -183,3 +183,16 @@ public class BreadcrumbItem
     public string Path { get; set; } = string.Empty;
     public bool IsLast { get; set; }
 }
+
+/// <summary>
+/// Aggregated file type info for space breakdown
+/// </summary>
+public class FileTypeInfo
+{
+    public string Extension { get; set; } = string.Empty;
+    public long TotalSize { get; set; }
+    public int FileCount { get; set; }
+    public double Percentage { get; set; }
+
+    public string SizeDisplay => FileSystemItem.FormatSize(TotalSize);
+}

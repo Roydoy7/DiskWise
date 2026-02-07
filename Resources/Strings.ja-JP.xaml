@@ -1,0 +1,152 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="Nav_Back">戻る</sys:String>
+    <sys:String x:Key="Nav_Forward">進む</sys:String>
+    <sys:String x:Key="Nav_Up">上の階層</sys:String>
+    <sys:String x:Key="Nav_Home">ホーム</sys:String>
+    <sys:String x:Key="Nav_ThisPC">PC</sys:String>
+
+    <!-- Actions -->
+    <sys:String x:Key="Action_Scan">スキャン</sys:String>
+    <sys:String x:Key="Action_ScanThis">このフォルダをスキャン</sys:String>
+    <sys:String x:Key="Action_Stop">停止</sys:String>
+    <sys:String x:Key="Action_Refresh">更新</sys:String>
+    <sys:String x:Key="Action_Delete">削除</sys:String>
+    <sys:String x:Key="Action_Analyze">分析</sys:String>
+    <sys:String x:Key="Action_AskAI">AI に質問</sys:String>
+    <sys:String x:Key="Action_OpenInExplorer">エクスプローラーで開く</sys:String>
+    <sys:String x:Key="Action_Settings">設定</sys:String>
+
+    <!-- Context Menu -->
+    <sys:String x:Key="Context_Open">開く</sys:String>
+    <sys:String x:Key="Context_OpenDefaultApp">既定のアプリで開く</sys:String>
+    <sys:String x:Key="Context_OpenInExplorer">エクスプローラーで開く</sys:String>
+    <sys:String x:Key="Context_OpenInTerminal">ターミナルで開く</sys:String>
+    <sys:String x:Key="Context_ScanFolder">フォルダをスキャン</sys:String>
+    <sys:String x:Key="Context_AIAnalyze">AI 分析</sys:String>
+    <sys:String x:Key="Context_CopyPath">パスをコピー</sys:String>
+    <sys:String x:Key="Context_CopyName">名前をコピー</sys:String>
+
+    <!-- Window -->
+    <sys:String x:Key="Window_Minimize">最小化</sys:String>
+    <sys:String x:Key="Window_Maximize">最大化</sys:String>
+    <sys:String x:Key="Window_Restore">元に戻す</sys:String>
+    <sys:String x:Key="Window_Close">閉じる</sys:String>
+
+    <!-- Sort -->
+    <sys:String x:Key="Sort_Label">並べ替え:</sys:String>
+    <sys:String x:Key="Sort_Size">サイズ</sys:String>
+    <sys:String x:Key="Sort_Name">名前</sys:String>
+    <sys:String x:Key="Sort_Date">日付</sys:String>
+
+    <!-- Display Options -->
+    <sys:String x:Key="Display_ShowHidden">隠しファイル表示</sys:String>
+    <sys:String x:Key="Display_ShowFiles">ファイル表示</sys:String>
+
+    <!-- AI -->
+    <sys:String x:Key="AI_Label">AI:</sys:String>
+    <sys:String x:Key="AI_LMStudio">LM Studio</sys:String>
+    <sys:String x:Key="AI_Gemini">Gemini</sys:String>
+    <sys:String x:Key="AI_None">なし</sys:String>
+    <sys:String x:Key="AI_Analysis">分析</sys:String>
+    <sys:String x:Key="AI_Advice">AI アドバイス</sys:String>
+    <sys:String x:Key="AI_ClickToAnalyze">「分析」をクリックして削除の安全性を確認</sys:String>
+    <sys:String x:Key="AI_Recommendation">AI 推奨</sys:String>
+    <sys:String x:Key="AI_Disclaimer">AI による分析は参考情報です。結果が不正確な場合があります。ファイルを削除する前に必ずご自身で確認してください。自己責任でご利用ください。</sys:String>
+    <sys:String x:Key="AI_NotAnalyzed">未分析</sys:String>
+    <sys:String x:Key="AI_Analyzing">分析中...</sys:String>
+    <sys:String x:Key="AI_Safe">削除しても安全</sys:String>
+    <sys:String x:Key="AI_Caution">削除には注意が必要</sys:String>
+    <sys:String x:Key="AI_Danger">削除しないでください</sys:String>
+
+    <!-- Search -->
+    <sys:String x:Key="Search_Results">結果:</sys:String>
+    <sys:String x:Key="Search_Items">件</sys:String>
+    <sys:String x:Key="Search_Scanning">検索中...</sys:String>
+
+    <!-- Home Page -->
+    <sys:String x:Key="Home_Recent">最近のフォルダ</sys:String>
+    <sys:String x:Key="Home_Drives">デバイスとドライブ</sys:String>
+    <sys:String x:Key="Home_SelectFolder">フォルダを選択...</sys:String>
+    <sys:String x:Key="Home_Description">AI によるクリーンアップ推奨機能を備えたディスクスペースアナライザー。</sys:String>
+    <sys:String x:Key="Home_QuickStart">クイックスタート</sys:String>
+    <sys:String x:Key="Home_Step1">ドライブまたは最近のフォルダを選択</sys:String>
+    <sys:String x:Key="Home_Step2">「スキャン」をクリックしてサイズを分析</sys:String>
+    <sys:String x:Key="Home_Step3">AI を使って削除の安全性を確認</sys:String>
+
+    <!-- Section Headers -->
+    <sys:String x:Key="Section_SizeMap">サイズマップ</sys:String>
+    <sys:String x:Key="Section_TopConsumers">容量上位</sys:String>
+    <sys:String x:Key="Section_FileTypes">ファイルタイプ</sys:String>
+    <sys:String x:Key="Section_Details">詳細</sys:String>
+    <sys:String x:Key="Section_Files">ファイル</sys:String>
+
+    <!-- Detail Panel -->
+    <sys:String x:Key="Detail_Title">詳細</sys:String>
+    <sys:String x:Key="Detail_SelectItem">項目を選択して詳細を表示</sys:String>
+    <sys:String x:Key="Detail_Path">パス</sys:String>
+    <sys:String x:Key="Detail_Size">サイズ</sys:String>
+    <sys:String x:Key="Detail_Files">ファイル数</sys:String>
+    <sys:String x:Key="Detail_Folders">フォルダ数:</sys:String>
+    <sys:String x:Key="Detail_Modified">更新日時</sys:String>
+
+    <!-- Status -->
+    <sys:String x:Key="Status_Ready">準備完了</sys:String>
+    <sys:String x:Key="Status_ScanningLabel">スキャン中</sys:String>
+    <sys:String x:Key="Status_Loading">読み込み中...</sys:String>
+    <sys:String x:Key="Status_Scanning">スキャン中: {0}</sys:String>
+    <sys:String x:Key="Status_Scanned">{0} 項目をスキャン済み</sys:String>
+    <sys:String x:Key="Status_Total">合計: {0}</sys:String>
+    <sys:String x:Key="Status_Cleanable">削除可能: {0}</sys:String>
+    <sys:String x:Key="Status_Folders">フォルダ</sys:String>
+    <sys:String x:Key="Status_Files">ファイル</sys:String>
+    <sys:String x:Key="Status_AccessDenied">アクセスが拒否されました</sys:String>
+
+    <!-- Time -->
+    <sys:String x:Key="Time_JustNow">たった今</sys:String>
+    <sys:String x:Key="Time_MinutesAgo">{0} 分前</sys:String>
+    <sys:String x:Key="Time_HoursAgo">{0} 時間前</sys:String>
+    <sys:String x:Key="Time_Yesterday">昨日</sys:String>
+    <sys:String x:Key="Time_DaysAgo">{0} 日前</sys:String>
+    <sys:String x:Key="Time_LastWeek">先週</sys:String>
+
+    <!-- Delete Dialog -->
+    <sys:String x:Key="Delete_Title">削除の確認</sys:String>
+    <sys:String x:Key="Delete_Message">以下の項目を削除してもよろしいですか？</sys:String>
+    <sys:String x:Key="Delete_ToRecycleBin">ごみ箱に移動</sys:String>
+    <sys:String x:Key="Delete_Permanently">完全に削除</sys:String>
+    <sys:String x:Key="Delete_Warning">警告: この操作は元に戻せません</sys:String>
+    <sys:String x:Key="Delete_AIWarning">AI はこの項目の削除を推奨していません</sys:String>
+    <sys:String x:Key="Delete_Confirm">削除</sys:String>
+    <sys:String x:Key="Delete_Cancel">キャンセル</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Settings_Title">設定</sys:String>
+    <sys:String x:Key="Settings_Language">言語</sys:String>
+    <sys:String x:Key="Settings_AI">AI 設定</sys:String>
+    <sys:String x:Key="Settings_LMStudioUrl">LM Studio URL</sys:String>
+    <sys:String x:Key="Settings_Temperature">温度</sys:String>
+    <sys:String x:Key="Settings_MaxTokens">最大トークン</sys:String>
+    <sys:String x:Key="Settings_ScanConfig">スキャン設定</sys:String>
+    <sys:String x:Key="Settings_CacheExpiration">キャッシュ有効期限（日）</sys:String>
+    <sys:String x:Key="Settings_ExcludePatterns">除外パターン（カンマ区切り）</sys:String>
+    <sys:String x:Key="Settings_ExcludePatternsHint">例: node_modules, .git, __pycache__</sys:String>
+    <sys:String x:Key="Settings_Maintenance">メンテナンス</sys:String>
+    <sys:String x:Key="Settings_ClearCache">キャッシュクリア</sys:String>
+    <sys:String x:Key="Settings_ClearRecents">履歴クリア</sys:String>
+    <sys:String x:Key="Settings_TestConnection">接続テスト</sys:String>
+    <sys:String x:Key="Settings_Connected">接続済み</sys:String>
+    <sys:String x:Key="Settings_Disconnected">未接続</sys:String>
+    <sys:String x:Key="Settings_Save">保存</sys:String>
+    <sys:String x:Key="Settings_Cancel">キャンセル</sys:String>
+
+    <!-- Drive Types -->
+    <sys:String x:Key="Drive_Local">ローカルディスク</sys:String>
+    <sys:String x:Key="Drive_Removable">リムーバブルディスク</sys:String>
+    <sys:String x:Key="Drive_Network">ネットワークドライブ</sys:String>
+    <sys:String x:Key="Drive_CDROM">CD/DVD ドライブ</sys:String>
+
+</ResourceDictionary>
